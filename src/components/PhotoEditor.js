@@ -1,14 +1,14 @@
 import React from "react";
 import { Stage, Layer, Image, Line } from "react-konva";
+import { triggerBase64Download } from 'react-base64-downloader';
 
 class PhotoEditor extends React.Component {
   
   state = {
     image: "",
     isDrawing: false,
-    lines: [],
-    mouseX: 0,
-    mouseY: 0
+    brushEnabled: false,
+    lines: []
   }
   
   componentDidMount() {
@@ -40,7 +40,9 @@ class PhotoEditor extends React.Component {
   handleMouseDown = (e) => {
     this.setState({isDrawing: true})
     const pos = e.target.getStage().getPointerPosition()
-    this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]});
+    if (this.state.brushEnabled) {
+    this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]})
+    }
   }
   
   handleMouseUp = () => {
@@ -51,14 +53,21 @@ class PhotoEditor extends React.Component {
     if (!this.state.isDrawing) {
       return;
     }
-    const point = e.target.getStage().getPointerPosition();
-    let lines = this.state.lines
-    let lastLine = lines[lines.length - 1];
-    // add point
-    lastLine.points = lastLine.points.concat([point.x, point.y]);
-    // replace last
-    lines.splice(lines.length - 1, 1, lastLine);
-    this.setState({lines: lines})
+    if (this.state.brushEnabled) {
+      const point = e.target.getStage().getPointerPosition();
+      let lines = this.state.lines
+      let lastLine = lines[lines.length - 1];
+      // add point
+      lastLine.points = lastLine.points.concat([point.x, point.y]);
+      // replace last
+      lines.splice(lines.length - 1, 1, lastLine);
+      this.setState({lines: lines})
+    }
+  }
+  
+  download = () => {
+    const base64 = this.stageRef.getStage().toDataURL()
+    triggerBase64Download(base64, 'photobooth_img')
   }
   
   render() {
@@ -73,10 +82,14 @@ class PhotoEditor extends React.Component {
       />
     })
     
-    console.log(lineComponents)
     return (
       <div className="photo-editor">
+        <button onClick={() => this.setState({brushEnabled: !this.state.brushEnabled})}>
+        {this.state.brushEnabled ? "drawing!" : "not drawing"}
+      </button>
+      <button onClick={this.download}>DOWNLOAD</button>
         <Stage
+          ref={node => { this.stageRef = node}}
           width={this.state.image.width} 
           height={this.state.image.height}
           onMouseDown={this.handleMouseDown}
@@ -92,9 +105,11 @@ class PhotoEditor extends React.Component {
               }}
             />
           </Layer>
+          
           <Layer>
-          {lineComponents}
-        </Layer>
+            {lineComponents}
+          </Layer>
+        
         </Stage>
       </div>
     );
