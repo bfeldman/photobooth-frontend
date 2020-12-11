@@ -1,32 +1,101 @@
 import React from 'react'
-import WebcamModal from './components/WebcamModal'
-import PhotoEditor from './components/PhotoEditor'
+import { Route, Switch, withRouter} from 'react-router-dom'
+
+import Studio from './containers/Studio'
+import Gallery from './containers/Gallery'
+
+import Navbar from "./components/Navbar"
+import Login from "./components/Login"
+import Signup from "./components/Signup"
+
+
 import './App.css'
 
 class App extends React.Component {
   
   state = {
-    webcamModalVisible: true,
-    webcamPhoto: "",
-    photoEditorVisible: false
+    user: null
   }
   
-  setPhotoToEdit = (photo) => {
-    this.setState({
-      webcamPhoto: photo,
-      webcamModalVisible: false,
-      photoEditorVisible: true
+  componentDidMount() {
+    const token = localStorage.getItem("token")
+    if (token) {
+      fetch('http://localhost:3000/api/v1/profile', {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(response => response.json())
+      .then(data => {
+        this.setState({user: data.user})
+      })
+    } else {
+      this.props.history.push("/login")
+    }
+  }
+  
+  signupHandler = (userObj) => {
+    fetch('http://localhost:3000/api/v1/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        "Accepts": 'application/json'
+      },
+      body: JSON.stringify({ user: userObj})
     })
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem("token", data.jwt)
+      this.setState({user: data.user})
+      this.props.history.push("/gallery")
+    })
+  }
+  
+  loginHandler = (userObj) => {
+    const token = localStorage.getItem("token")
+    if (token) {
+      this.props.history.push("/gallery")
+    } else {
+      fetch('http://localhost:3000/api/v1/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          "Accepts": 'application/json'
+        },
+        body: JSON.stringify({ user: userObj})
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        localStorage.setItem("token", data.jwt)
+        this.setState({user: data.user}, () => console.log("LOGGED IN AS USER", this.state.user))
+        this.props.history.push("/gallery")
+      })
+    }
+  }
+  
+  logoutHandler = () => {
+    localStorage.removeItem("token")
+    this.setState({user: null})
+    this.props.history.push("/")
   }
   
   render() {
     return (
       <div className="App">
-        {this.state.webcamModalVisible ? <WebcamModal setPhotoToEdit={this.setPhotoToEdit} /> : null}
-        {this.state.photoEditorVisible ? <PhotoEditor src={this.state.webcamPhoto}/> : null}
+        <Navbar user={this.state.user} logoutHandler={this.logoutHandler}/>
+        <main>
+        <Switch>
+          {/* <Route exact path="/" render={Home} /> */}
+          <Route path="/signup" render={ () => <Signup submitHandler={this.signupHandler} /> } />
+          <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
+          <Route path="/studio" render={ () => <Studio user={this.state.user} /> } />
+          <Route path="/gallery" render={ () => <Gallery />} />
+        </Switch>
+      </main>
+        
       </div>
     )
   }
 }
 
-export default App;
+export default withRouter(App);
