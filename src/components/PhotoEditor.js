@@ -89,7 +89,7 @@ class PhotoEditor extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("Image saved", base64_img, data)
+      console.log("Image saved")
     })
     
     

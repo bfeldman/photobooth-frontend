@@ -24,7 +24,7 @@ function Gallery(props) {
   let photos
   let photoCards
   if (user !== null) {
-    photos = user.photos
+    photos = user.photos.reverse()
     photoCards = photos.map(photo => <PhotoCard src={photo.base64_src} key={photo.id} />)
   }
   
