@@ -1,43 +1,28 @@
 import React from 'react'
-import Webcam from "react-webcam"
+import WebcamModal from './components/WebcamModal'
 import PhotoEditor from './components/PhotoEditor'
+import './App.css'
 
 class App extends React.Component {
   
   state = {
-    webcamPreview: true,
+    webcamModalVisible: true,
     webcamPhoto: "",
     photoEditorVisible: false
   }
-
-  setRef = (webcam) => {
-    this.webcam = webcam;
-  }
-
-  capture = () => {
-    const image = this.webcam.getScreenshot();
-    this.setState({
-      webcamPhoto: image,
-      photoEditorVisible: true
-    });
-  };
   
-  reset = () => {
+  setPhotoToEdit = (photo) => {
     this.setState({
-      webcamPreview: true,
-      webcamPhoto: "",
-      photoEditorVisible: false
+      webcamPhoto: photo,
+      webcamModalVisible: false,
+      photoEditorVisible: true
     })
   }
   
   render() {
     return (
       <div className="App">
-        <button onClick={this.capture}>take pic</button>
-        <button onClick={this.reset}>reset</button>
-        <br />
-        <Webcam ref={this.setRef} screenshotFormat="image/jpeg" />
-        <br />
+        {this.state.webcamModalVisible ? <WebcamModal setPhotoToEdit={this.setPhotoToEdit} /> : null}
         {this.state.photoEditorVisible ? <PhotoEditor src={this.state.webcamPhoto}/> : null}
       </div>
     )
