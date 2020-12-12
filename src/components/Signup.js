@@ -1,4 +1,6 @@
 import React from 'react'
+import { Form, Button } from 'semantic-ui-react'
+
 
 class Signup extends React.Component {
     state = {
@@ -20,14 +22,31 @@ class Signup extends React.Component {
         return(
             <div className="signup-form">
                 <h1>Sign Up</h1>
-                <form>
-                    <input type="text" name="username" placeholder="username" value={this.state.username} onChange={this.changeHandler} /><br/><br/>
-                    <input type="text" name="password" placeholder="password" value={this.state.password} onChange={this.changeHandler} /><br/><br/>
-                    <input type="text" name="email_address" placeholder="email address" value={this.state.email_address} onChange={this.changeHandler} /><br/><br/>
-                    
-                    <button onClick={this.submitHandler}>Sign Up</button>
-
-                </form>
+                <Form>
+                    <Form.Input
+                        label='username'
+                        name='username'
+                        placeholder='username'
+                        value={this.state.username}
+                        onChange={this.changeHandler}
+                    />
+                    <Form.Input
+                        type='password'
+                        label='password'
+                        name="password"
+                        placeholder="password" 
+                        value={this.state.password} 
+                        onChange={this.changeHandler}
+                    />
+                    <Form.Input
+                        label='email address'
+                        name='email_address'
+                        placeholder='email address'
+                        value={this.state.email_address}
+                        onChange={this.changeHandler}
+                    />
+                    <Button onClick={this.submitHandler}>Sign Up</Button>
+                </Form>
             </div>
         )
     }

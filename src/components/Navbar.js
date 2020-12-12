@@ -1,26 +1,66 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { Menu } from 'semantic-ui-react'
 
-function Navbar(props) {
-    return(
-        <div className="navbar">
-            <div className="site-name">
-                <NavLink to="/"><h1>Boto Phooth</h1></NavLink>
-            </div>
-            <div className="nav-menu">
-                <NavLink to="/gallery">Gallery</NavLink>
-                <NavLink to="/studio">New pic</NavLink>
-                {props.user ?
-                    <NavLink to="/" onClick={ props.logoutHandler }>Log Out</NavLink>
-                    :
-                    <>
-                    <NavLink to="/signup">Sign Up</NavLink>
-                    <NavLink to="/login">Log in</NavLink>
-                    </>
+class Navbar extends React.Component {
+    state = {}
+    
+    componentDidMount() {
+        this.setState({ loggedIn: this.props.user })
+    }
+    
+    handleItemClick = (e, { name }) => this.setState({ activeItem: name })
+    
+    render() {
+        console.log("USER?", this.state.loggedIn)
+        const activeItem = this.state.activeItem
+        return(
+            <Menu>
+                <Menu.Item>
+                    BOTO PHOOTH
+                </Menu.Item>
+                <Menu.Item
+                    as={NavLink}
+                    exact to="/gallery"
+                    name='gallery'
+                    active={activeItem === 'gallery'}
+                    onClick={this.handleItemClick}
+                >
+                    🖼 Gallery
+                </Menu.Item>
+        
+                <Menu.Item
+                    as={NavLink}
+                    exact to="/studio"
+                    name='studio'
+                    active={activeItem === 'studio'}
+                    onClick={this.handleItemClick}
+                >
+                    🎨 Studio
+                </Menu.Item>
+        
+                {this.state.loggedIn ?
+                    <Menu.Item
+                        name='logout'
+                        active={activeItem === 'logout'}
+                        onClick={this.props.logoutHandler}
+                    >
+                        Log Out
+                    </Menu.Item>
+                :
+                    <Menu.Item
+                        as={NavLink}
+                        exact to="/login"
+                        name='login'
+                        active={activeItem === 'login'}
+                        onClick={this.handleItemClick}
+                    >
+                        Log In
+                    </Menu.Item>
                 }
-            </div>
-        </div>
-    )
+            </Menu>
+        )
+    }
 }
 
 export default Navbar

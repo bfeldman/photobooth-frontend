@@ -1,7 +1,7 @@
 import React from "react";
 import { Stage, Layer, Image, Line } from "react-konva";
 import { triggerBase64Download } from 'react-base64-downloader';
-import { Redirect } from "react-router-dom";
+import { Container, Button, Header } from 'semantic-ui-react'
 
 
 class PhotoEditor extends React.Component {
@@ -108,14 +108,15 @@ class PhotoEditor extends React.Component {
     })
     
     return (
-      <div className="photo-editor">
+      <Container className="photo-editor">
       
       <div className="toolbar">
-        <button onClick={() => this.setState({brushEnabled: !this.state.brushEnabled})}>
+        <Button onClick={() => this.setState({brushEnabled: !this.state.brushEnabled})}>
           {this.state.brushEnabled ? "drawing!" : "not drawing"}
-        </button>
-        <button onClick={this.download}>DOWNLOAD</button>
-        <button onClick={this.saveToGallery}>SAVE TO GALLERY</button>
+        </Button>
+        <Button onClick={this.download}>DOWNLOAD</Button>
+        <Button onClick={this.saveToGallery}>SAVE TO GALLERY</Button>
+        <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
       </div>
       
         <Stage
@@ -138,7 +139,7 @@ class PhotoEditor extends React.Component {
           </Layer>
         
         </Stage>
-      </div>
+      </Container>
     );
   }
 }

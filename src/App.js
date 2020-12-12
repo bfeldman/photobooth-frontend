@@ -8,8 +8,8 @@ import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
 
-
 import './App.css'
+import 'semantic-ui-css/semantic.min.css'
 
 class App extends React.Component {
   
@@ -67,7 +67,7 @@ class App extends React.Component {
       .then(data => {
         console.log(data)
         localStorage.setItem("token", data.jwt)
-        this.setState({user: data.user}, () => console.log("LOGGED IN AS USER", this.state.user))
+        this.setState({user: data.user})
         this.props.history.push("/gallery")
       })
     }
@@ -82,16 +82,16 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Navbar user={this.state.user} logoutHandler={this.logoutHandler}/>
+        <Navbar user={!!this.state.user} logoutHandler={this.logoutHandler}/>
         <main>
-        <Switch>
-          {/* <Route exact path="/" render={Home} /> */}
-          <Route path="/signup" render={ () => <Signup submitHandler={this.signupHandler} /> } />
-          <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
-          <Route path="/studio" render={ () => <Studio user={this.state.user} /> } />
-          <Route path="/gallery" render={ () => <Gallery />} />
-        </Switch>
-      </main>
+          <Switch>
+            {/* <Route exact path="/" render={Home} /> */}
+            <Route path="/signup" render={ () => <Signup submitHandler={this.signupHandler} /> } />
+            <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
+            <Route path="/studio" render={ () => <Studio user={this.state.user} /> } />
+            <Route path="/gallery" render={ () => <Gallery />} />
+          </Switch>
+        </main>
         
       </div>
     )
