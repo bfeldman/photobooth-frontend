@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Switch, withRouter} from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import Studio from './containers/Studio'
 import Gallery from './containers/Gallery'
@@ -12,11 +13,7 @@ import './App.css'
 import 'semantic-ui-css/semantic.min.css'
 
 class App extends React.Component {
-  
-  state = {
-    user: null
-  }
-  
+    
   componentDidMount() {
     const token = localStorage.getItem("token")
     if (token) {
@@ -26,7 +23,14 @@ class App extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
-        this.setState({user: data.user})
+        this.props.dispatch({
+          type: 'SET_USER',
+          payload: {
+            user_id: data.user.id,
+            username: data.user.username,
+            photos: data.user.photos
+          }
+        })
       })
     } else {
       this.props.history.push("/login")
@@ -38,14 +42,21 @@ class App extends React.Component {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        "Accepts": 'application/json'
+        'Accepts': 'application/json'
       },
       body: JSON.stringify({ user: userObj})
     })
     .then(response => response.json())
     .then(data => {
       localStorage.setItem("token", data.jwt)
-      this.setState({user: data.user})
+      this.props.dispatch({
+        type: 'SET_USER',
+        payload: {
+          user_id: data.user.id,
+          username: data.user.username,
+          photos: data.user.photos
+        }
+      })
       this.props.history.push("/gallery")
     })
   }
@@ -66,7 +77,14 @@ class App extends React.Component {
       .then(response => response.json())
       .then(data => {
         localStorage.setItem("token", data.jwt)
-        this.setState({user: data.user})
+        this.props.dispatch({
+          type: 'SET_USER',
+          payload: {
+            user_id: data.user.id,
+            username: data.user.username,
+            photos: data.user.photos
+          }
+        })
         this.props.history.push("/gallery")
       })
     }
@@ -74,27 +92,44 @@ class App extends React.Component {
   
   logoutHandler = () => {
     localStorage.removeItem("token")
-    this.setState({user: null})
+    this.props.dispatch({
+      type: 'LOGOUT_USER',
+      payload: {
+        user_id: null,
+        username: "",
+        photos: [],
+        loggedIn: false
+      }
+    })
     this.props.history.push("/login")
   }
   
   render() {
     return (
       <div className="App">
-        <Navbar user={!!this.state.user} logoutHandler={this.logoutHandler}/>
+        <Navbar logoutHandler={this.logoutHandler}/>
         <main>
           <Switch>
             {/* <Route exact path="/" render={Home} /> */}
             <Route path="/signup" render={ () => <Signup submitHandler={this.signupHandler} /> } />
             <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
-            <Route path="/studio" render={ () => <Studio user={this.state.user} /> } />
+            <Route path="/studio" render={ () => <Studio /> } />
             <Route path="/gallery" render={ () => <Gallery />} />
           </Switch>
         </main>
-        
       </div>
     )
   }
 }
 
-export default withRouter(App);
+const mapStateToProps = state => {
+  return { user: state.user }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App))

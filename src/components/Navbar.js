@@ -1,12 +1,17 @@
 import React from 'react'
+import {connect} from 'react-redux'
+
 import { NavLink } from 'react-router-dom'
 import { Menu } from 'semantic-ui-react'
 
 class Navbar extends React.Component {
-    state = {}
+    
+    state = {
+        activeItem: ""
+    }
     
     componentDidMount() {
-        this.setState({ loggedIn: this.props.user })
+        this.setState({ loggedIn: this.props.loggedIn })
     }
     
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
@@ -38,7 +43,7 @@ class Navbar extends React.Component {
                     🎨 Studio
                 </Menu.Item>
         
-                
+                {this.props.loggedIn ?
                     <Menu.Item
                         name='logout'
                         active={activeItem === 'logout'}
@@ -46,7 +51,7 @@ class Navbar extends React.Component {
                     >
                         Log Out
                     </Menu.Item>
-                    
+                :
                     <Menu.Item
                         as={NavLink}
                         exact to="/login"
@@ -56,10 +61,14 @@ class Navbar extends React.Component {
                     >
                         Log In
                     </Menu.Item>
-
+                }
             </Menu>
         )
     }
 }
 
-export default Navbar
+const mapStateToProps = state => {
+    return { loggedIn: state.loggedIn }
+}
+
+export default connect(mapStateToProps)(Navbar)

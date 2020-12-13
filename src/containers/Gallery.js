@@ -1,29 +1,18 @@
 import React from 'react'
+import { connect } from 'react-redux'
+
 import PhotoCard from '../components/PhotoCard'
 import { Card, Modal, Image } from 'semantic-ui-react'
 
 
 class Gallery extends React.Component {
   state = {
-    user: null,
     modalOpen: false,
     modalPhoto: null
   }
   
   componentDidMount() {
-    const token = localStorage.getItem("token")
-    if (token) {
-      fetch('http://localhost:3000/api/v1/profile', {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(response => response.json())
-      .then(data => {
-        this.setState({user: data.user})
-      })
-    } else {
-      this.props.history.push("/login")
-    }
+    
   }
   
   openModal = (photo) => {
@@ -34,17 +23,12 @@ class Gallery extends React.Component {
   }
   
   render() {
-    
-    let photoCards = []
-    if (this.state.user !== null) {
-      const photos = this.state.user.photos
-      photoCards = photos.map(photo =>
-        <PhotoCard 
-          src={photo.base64_src}
-          key={photo.id}
-          onClick={() => this.openModal(photo)}
-        />)
-    }
+    const photoCards = this.props.photos.reverse().map(photo =>
+    <PhotoCard 
+      src={photo.base64_src}
+      key={photo.id}
+      onClick={() => this.openModal(photo)}
+    />)    
     
     return(
       <div className="gallery">
@@ -55,7 +39,6 @@ class Gallery extends React.Component {
         
         <Modal
           onClose={() => this.setState({modalOpen: false})}
-          onOpen={() => this.setState({modalOpen: true})}
           open={this.state.modalOpen}
         >
           <Modal.Content image>
@@ -67,4 +50,8 @@ class Gallery extends React.Component {
   }
 }
 
-export default Gallery
+const mapStateToProps = state => {
+  return { photos: state.photos }
+}
+
+export default connect(mapStateToProps)(Gallery)
