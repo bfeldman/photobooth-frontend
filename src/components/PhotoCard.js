@@ -1,10 +1,12 @@
 import React from 'react'
+import { Card } from 'semantic-ui-react'
+
 
 function PhotoCard(props) {
   return(
-    <div className="photo-card">
-      <img src={props.src} height="300" alt="cool dude" />
-    </div>
+    <Card
+      image={props.src}
+    />
   )
 }
 

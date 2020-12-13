@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PhotoCard from '../components/PhotoCard'
+import { Card, Modal, Image } from 'semantic-ui-react'
 
-function Gallery(props) {
-  const [user, setUser] = useState(null)
+
+class Gallery extends React.Component {
+  state = {
+    user: null,
+    modalOpen: false,
+    modalPhoto: null
+  }
   
-  
-  useEffect(() => {
+  componentDidMount() {
     const token = localStorage.getItem("token")
     if (token) {
       fetch('http://localhost:3000/api/v1/profile', {
@@ -14,27 +19,52 @@ function Gallery(props) {
       })
       .then(response => response.json())
       .then(data => {
-        setUser(data.user)
+        this.setState({user: data.user})
       })
     } else {
       this.props.history.push("/login")
     }
-  }, [])
-  
-  let photos
-  let photoCards
-  if (user !== null) {
-    photos = user.photos.reverse()
-    photoCards = photos.map(photo => <PhotoCard src={photo.base64_src} key={photo.id} />)
   }
   
+  openModal = (photo) => {
+    this.setState({
+      modalPhoto: photo,
+      modalOpen: true
+    })
+  }
   
-  return(
-    <div className="gallery">
-      <h1>GALLERY</h1>
-      {photoCards}
-    </div>
-  )
+  render() {
+    
+    let photoCards = []
+    if (this.state.user !== null) {
+      const photos = this.state.user.photos
+      photoCards = photos.map(photo =>
+        <PhotoCard 
+          src={photo.base64_src}
+          key={photo.id}
+          onClick={() => this.openModal(photo)}
+        />)
+    }
+    
+    return(
+      <div className="gallery">
+        <h1>GALLERY</h1>
+        <Card.Group itemsPerRow={2}>
+          {photoCards}
+        </Card.Group>
+        
+        <Modal
+          onClose={() => this.setState({modalOpen: false})}
+          onOpen={() => this.setState({modalOpen: true})}
+          open={this.state.modalOpen}
+        >
+          <Modal.Content image>
+          <Image size='large' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped />
+          </Modal.Content>
+        </Modal>
+      </div>
+    )
+  }
 }
 
 export default Gallery

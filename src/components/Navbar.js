@@ -12,7 +12,6 @@ class Navbar extends React.Component {
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
     
     render() {
-        console.log("USER?", this.state.loggedIn)
         const activeItem = this.state.activeItem
         return(
             <Menu>
@@ -39,7 +38,7 @@ class Navbar extends React.Component {
                     🎨 Studio
                 </Menu.Item>
         
-                {this.state.loggedIn ?
+                
                     <Menu.Item
                         name='logout'
                         active={activeItem === 'logout'}
@@ -47,7 +46,7 @@ class Navbar extends React.Component {
                     >
                         Log Out
                     </Menu.Item>
-                :
+                    
                     <Menu.Item
                         as={NavLink}
                         exact to="/login"
@@ -57,7 +56,7 @@ class Navbar extends React.Component {
                     >
                         Log In
                     </Menu.Item>
-                }
+
             </Menu>
         )
     }

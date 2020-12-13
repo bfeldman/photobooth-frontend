@@ -65,7 +65,6 @@ class App extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data)
         localStorage.setItem("token", data.jwt)
         this.setState({user: data.user})
         this.props.history.push("/gallery")
@@ -76,7 +75,7 @@ class App extends React.Component {
   logoutHandler = () => {
     localStorage.removeItem("token")
     this.setState({user: null})
-    this.props.history.push("/")
+    this.props.history.push("/login")
   }
   
   render() {
