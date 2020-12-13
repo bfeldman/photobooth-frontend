@@ -6,6 +6,7 @@ import { Card, Modal, Image } from 'semantic-ui-react'
 
 
 class Gallery extends React.Component {
+  
   state = {
     modalOpen: false,
     modalPhoto: null
@@ -23,7 +24,7 @@ class Gallery extends React.Component {
   }
   
   render() {
-    const photoCards = this.props.photos.reverse().map(photo =>
+    const photoCards = this.props.photos.map(photo =>
     <PhotoCard 
       src={photo.base64_src}
       key={photo.id}
@@ -51,7 +52,7 @@ class Gallery extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { photos: state.photos }
+  return { photos: state.photos.reverse() }
 }
 
 export default connect(mapStateToProps)(Gallery)

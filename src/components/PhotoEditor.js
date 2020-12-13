@@ -1,7 +1,8 @@
 import React from "react";
+import { connect } from 'react-redux'
 import { Stage, Layer, Image, Line } from "react-konva";
 import { triggerBase64Download } from 'react-base64-downloader';
-import { Container, Button, Header } from 'semantic-ui-react'
+import { Container, Button } from 'semantic-ui-react'
 
 
 class PhotoEditor extends React.Component {
@@ -73,7 +74,7 @@ class PhotoEditor extends React.Component {
   saveToGallery = () => {
     const base64_img = this.stageRef.getStage().toDataURL()
     const newPhoto = {
-      user_id: this.props.user.id,
+      user_id: this.props.userId,
       is_public: true,
       base64_src: base64_img
     }    
@@ -90,6 +91,12 @@ class PhotoEditor extends React.Component {
     .then(response => response.json())
     .then(data => {
       console.log("Image saved")
+      this.props.dispatch({
+        type: 'ADD_PHOTO',
+        payload: {
+          photo: data.photo
+        }
+      })
     })
     
     
@@ -144,4 +151,14 @@ class PhotoEditor extends React.Component {
   }
 }
 
-export default PhotoEditor
+const mapStateToProps = state => {
+  return { userId: state.user_id }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoEditor)

@@ -26,7 +26,7 @@ class App extends React.Component {
         this.props.dispatch({
           type: 'SET_USER',
           payload: {
-            user_id: data.user.id,
+            userId: data.user.id,
             username: data.user.username,
             photos: data.user.photos
           }
@@ -52,7 +52,7 @@ class App extends React.Component {
       this.props.dispatch({
         type: 'SET_USER',
         payload: {
-          user_id: data.user.id,
+          userId: data.user.id,
           username: data.user.username,
           photos: data.user.photos
         }
@@ -80,7 +80,7 @@ class App extends React.Component {
         this.props.dispatch({
           type: 'SET_USER',
           payload: {
-            user_id: data.user.id,
+            userId: data.user.id,
             username: data.user.username,
             photos: data.user.photos
           }
@@ -95,7 +95,7 @@ class App extends React.Component {
     this.props.dispatch({
       type: 'LOGOUT_USER',
       payload: {
-        user_id: null,
+        userId: null,
         username: "",
         photos: [],
         loggedIn: false

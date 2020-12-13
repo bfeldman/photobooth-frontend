@@ -1,7 +1,7 @@
 import { createStore } from 'redux'
 
 const initialState = {
-  user_id: null,
+  userId: null,
   username: "",
   photos: [],
   loggedIn: false
@@ -11,18 +11,24 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_USER':
       return Object.assign({}, state, {
-        user_id: action.payload.user_id,
+        userId: action.payload.userId,
         username: action.payload.username,
         photos: action.payload.photos,
-        loggedIn: !!action.payload.user_id
+        loggedIn: true
       })
     
     case 'LOGOUT_USER':
       return Object.assign({}, state, {
-        user_id: null,
+        userId: null,
         username: "",
         photos: [],
         loggedIn: false
+      })
+      
+    case 'ADD_PHOTO':
+      console.log(state.photos)
+      return Object.assign({}, state, {
+        photos: state.photos.concat(action.payload)
       })
     
     default:
