@@ -1,14 +1,18 @@
 import React from 'react'
+import { Card, Modal, Image } from 'semantic-ui-react'
 
 import PhotoCard from '../components/PhotoCard'
-import { Card, Modal, Image } from 'semantic-ui-react'
+import Comment from '../components/Comment'
+import CommentForm from '../components/CommentForm'
 
 
 class Gallery extends React.Component {
   
   state = {
     modalOpen: false,
-    modalPhoto: {},
+    modalPhoto: {
+      comments: []
+    },
     user: {
       id: null,
       username: "",
@@ -41,7 +45,19 @@ class Gallery extends React.Component {
       />)   
   }
   
+  renderComments = () => {
+    return this.state.modalPhoto.comments.map(comment => <Comment key={comment.id} comment={comment} />)
+  }
+  
+  displayNewComment = (commentObj) => {
+    console.log("OLD:", this.state.modalPhoto)
+    const newModalPhoto = {...this.state.modalPhoto, comments: this.state.modalPhoto.comments.concat(commentObj)}
+    console.log("NEW:", newModalPhoto)
+    this.setState({modalPhoto: newModalPhoto})
+  }
+  
   render() {
+    const comments =  this.state.modalPhoto.comments.map(comment => <Comment key={comment.id} comment={comment} />)
     return(
       <div className="gallery">
         <h1>{`${this.props.username}'s Pics`}</h1>
@@ -54,7 +70,9 @@ class Gallery extends React.Component {
           open={this.state.modalOpen}
         >
           <Modal.Content image>
-          <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
+            <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
+              { this.renderComments() }
+            <CommentForm photoId={this.state.modalPhoto.id} displayNewComment={this.displayNewComment}/>
           </Modal.Content>
         </Modal>
       </div>
