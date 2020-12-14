@@ -116,7 +116,7 @@ class App extends React.Component {
             <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
             <Route path="/studio" render={ () => <Studio /> } />
             <Route path="/gallery/:username" render={ 
-              ({match}) => <Gallery username={match.params.username} />
+              ({match}) => <Gallery username={match.params.username} key={match.params.username} />
             }/>
           </Switch>
         </main>

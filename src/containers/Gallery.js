@@ -40,8 +40,10 @@ class Gallery extends React.Component {
     return photoArray.map(photo =>
       <PhotoCard
         photo={photo}
+        posterId={this.state.user.id}
         key={photo.id}
         openModal={this.openModal}
+        deletePhoto={this.deletePhoto}
       />)   
   }
   
@@ -55,6 +57,22 @@ class Gallery extends React.Component {
     this.setState({
       modalPhoto: newModalPhoto,
       user: {...this.state.user, photos: newPhotos}
+    })
+  }
+  
+  deletePhoto = (photoId) => {
+    const updatedPhotos = this.state.user.photos.filter(photo => photo.id !== photoId)
+    const token = localStorage.getItem('token')
+    fetch(`http://localhost:3000/api/v1/photos/${photoId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("DELETED PHOTO", photoId)
+      this.setState({ user: {...this.state.user, photos: updatedPhotos} })
     })
   }
   
