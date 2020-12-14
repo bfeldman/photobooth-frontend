@@ -8,7 +8,7 @@ class Gallery extends React.Component {
   
   state = {
     modalOpen: false,
-    modalPhoto: null,
+    modalPhoto: {},
     user: {
       id: null,
       username: "",
@@ -20,7 +20,6 @@ class Gallery extends React.Component {
     fetch(`http://localhost:3000/api/v1/users/${this.props.username}`)
     .then(response => response.json())
     .then(data => {
-      console.log("FETCHED USER:", data.user)
       this.setState({user: data.user})
     })
   }
@@ -33,19 +32,19 @@ class Gallery extends React.Component {
   }
   
   renderPhotoCards = () => {
-    return this.state.user.photos.map(photo =>
-      <PhotoCard 
-        src={photo.base64_src}
+    const photoArray = this.state.user.photos.sort((a, b) => b.id - a.id)
+    return photoArray.map(photo =>
+      <PhotoCard
+        photo={photo}
         key={photo.id}
-        onClick={() => this.openModal(photo)}
+        openModal={this.openModal}
       />)   
   }
   
   render() {
-    console.log("STATE", this.state)
     return(
       <div className="gallery">
-        <h1>{`${this.state.user.username}'s Pics`}</h1>
+        <h1>{`${this.props.username}'s Pics`}</h1>
         <Card.Group itemsPerRow={3}>
           {this.renderPhotoCards()}
         </Card.Group>
@@ -55,7 +54,7 @@ class Gallery extends React.Component {
           open={this.state.modalOpen}
         >
           <Modal.Content image>
-          <Image size='large' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped />
+          <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
           </Modal.Content>
         </Modal>
       </div>
