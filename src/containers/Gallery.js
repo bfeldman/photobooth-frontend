@@ -50,14 +50,15 @@ class Gallery extends React.Component {
   }
   
   displayNewComment = (commentObj) => {
-    console.log("OLD:", this.state.modalPhoto)
     const newModalPhoto = {...this.state.modalPhoto, comments: this.state.modalPhoto.comments.concat(commentObj)}
-    console.log("NEW:", newModalPhoto)
-    this.setState({modalPhoto: newModalPhoto})
+    let newPhotos = this.state.user.photos.filter(photo => photo.id !== newModalPhoto.id ).concat(newModalPhoto)
+    this.setState({
+      modalPhoto: newModalPhoto,
+      user: {...this.state.user, photos: newPhotos}
+    })
   }
   
   render() {
-    const comments =  this.state.modalPhoto.comments.map(comment => <Comment key={comment.id} comment={comment} />)
     return(
       <div className="gallery">
         <h1>{`${this.props.username}'s Pics`}</h1>

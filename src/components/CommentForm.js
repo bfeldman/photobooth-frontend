@@ -34,7 +34,6 @@ class CommentForm extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("COMMENT SUBMITTED:", data)
       this.props.displayNewComment(data.comment)
       this.setState({comment: ""})
     })

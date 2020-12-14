@@ -25,7 +25,7 @@ class Navbar extends React.Component {
                 </Menu.Item>
                 <Menu.Item
                     as={NavLink}
-                    exact to={`/gallery/${this.props.username}`}
+                    to={`/gallery/${this.props.username}`}
                     name='gallery'
                     active={activeItem === 'gallery'}
                     onClick={this.handleItemClick}
