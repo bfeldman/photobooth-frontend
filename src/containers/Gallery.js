@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 import PhotoCard from '../components/PhotoCard'
 import { Card, Modal, Image } from 'semantic-ui-react'
@@ -9,11 +8,21 @@ class Gallery extends React.Component {
   
   state = {
     modalOpen: false,
-    modalPhoto: null
+    modalPhoto: null,
+    user: {
+      id: null,
+      username: "",
+      photos: []
+    }
   }
   
   componentDidMount() {
-    
+    fetch(`http://localhost:3000/api/v1/users/${this.props.username}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log("FETCHED USER:", data.user)
+      this.setState({user: data.user})
+    })
   }
   
   openModal = (photo) => {
@@ -23,19 +32,22 @@ class Gallery extends React.Component {
     })
   }
   
+  renderPhotoCards = () => {
+    return this.state.user.photos.map(photo =>
+      <PhotoCard 
+        src={photo.base64_src}
+        key={photo.id}
+        onClick={() => this.openModal(photo)}
+      />)   
+  }
+  
   render() {
-    const photoCards = this.props.photos.map(photo =>
-    <PhotoCard 
-      src={photo.base64_src}
-      key={photo.id}
-      onClick={() => this.openModal(photo)}
-    />)    
-    
+    console.log("STATE", this.state)
     return(
       <div className="gallery">
-        <h1>GALLERY</h1>
-        <Card.Group itemsPerRow={2}>
-          {photoCards}
+        <h1>{`${this.state.user.username}'s Pics`}</h1>
+        <Card.Group itemsPerRow={3}>
+          {this.renderPhotoCards()}
         </Card.Group>
         
         <Modal
@@ -51,8 +63,4 @@ class Gallery extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return { photos: state.photos.reverse() }
-}
-
-export default connect(mapStateToProps)(Gallery)
+export default Gallery

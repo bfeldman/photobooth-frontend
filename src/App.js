@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Studio from './containers/Studio'
 import Gallery from './containers/Gallery'
 
+
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
@@ -44,11 +45,11 @@ class App extends React.Component {
         'Content-Type': 'application/json',
         'Accepts': 'application/json'
       },
-      body: JSON.stringify({ user: userObj})
+      body: JSON.stringify({ user: userObj })
     })
     .then(response => response.json())
     .then(data => {
-      localStorage.setItem("token", data.jwt)
+      localStorage.setItem('token', data.jwt)
       this.props.dispatch({
         type: 'SET_USER',
         payload: {
@@ -57,7 +58,7 @@ class App extends React.Component {
           photos: data.user.photos
         }
       })
-      this.props.history.push("/gallery")
+      this.props.history.push("/gallery/" + data.user.username)
     })
   }
   
@@ -85,7 +86,7 @@ class App extends React.Component {
             photos: data.user.photos
           }
         })
-        this.props.history.push("/gallery")
+        this.props.history.push("/gallery/" + data.user.username)
       })
     }
   }
@@ -114,7 +115,9 @@ class App extends React.Component {
             <Route path="/signup" render={ () => <Signup submitHandler={this.signupHandler} /> } />
             <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
             <Route path="/studio" render={ () => <Studio /> } />
-            <Route path="/gallery" render={ () => <Gallery />} />
+            <Route path="/gallery/:username" render={ 
+              ({match}) => <Gallery username={match.params.username} />
+            }/>
           </Switch>
         </main>
       </div>

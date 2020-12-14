@@ -25,12 +25,12 @@ class Navbar extends React.Component {
                 </Menu.Item>
                 <Menu.Item
                     as={NavLink}
-                    exact to="/gallery"
+                    exact to={`/gallery/${this.props.username}`}
                     name='gallery'
                     active={activeItem === 'gallery'}
                     onClick={this.handleItemClick}
                 >
-                    🖼 Gallery
+                    🖼 My Gallery
                 </Menu.Item>
         
                 <Menu.Item
@@ -68,7 +68,10 @@ class Navbar extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return { loggedIn: state.loggedIn }
+    return {
+        loggedIn: state.loggedIn,
+        username: state.username
+    }
 }
 
 export default connect(mapStateToProps)(Navbar)

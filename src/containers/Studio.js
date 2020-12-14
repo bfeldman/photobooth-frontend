@@ -1,7 +1,6 @@
 import React from 'react'
 import WebcamModal from '../components/WebcamModal'
 import PhotoEditor from '../components/PhotoEditor'
-import { Button, Header, Modal, Image } from 'semantic-ui-react'
 
 
 class Studio extends React.Component {
