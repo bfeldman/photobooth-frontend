@@ -29,7 +29,7 @@ class Studio extends React.Component {
     return (
       <div className="Studio">
         {this.state.photoEditorVisible ? null : <WebcamModal sendToEditor={this.enablePhotoEditor} />}
-        {this.state.photoEditorVisible ? <PhotoEditor src={this.state.webcamPhoto} user={this.props.user} retakePhoto={this.retakePhoto}/> : null}
+        {this.state.photoEditorVisible ? <PhotoEditor src={this.state.webcamPhoto} retakePhoto={this.retakePhoto}/> : null}
       </div>
     )
   }

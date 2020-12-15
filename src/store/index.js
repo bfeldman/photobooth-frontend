@@ -26,9 +26,8 @@ const reducer = (state = initialState, action) => {
       })
       
     case 'ADD_PHOTO':
-      console.log(state.photos)
       return Object.assign({}, state, {
-        photos: state.photos.concat(action.payload)
+        photos: [...state.photos, action.payload.photo]
       })
     
     default:
