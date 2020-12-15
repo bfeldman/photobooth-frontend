@@ -72,6 +72,7 @@ class PhotoEditor extends React.Component {
   }
   
   saveToGallery = () => {
+    console.log(this.props.userId)
     const base64_img = this.stageRef.getStage().toDataURL()
     const newPhoto = {
       user_id: this.props.userId,
@@ -90,7 +91,6 @@ class PhotoEditor extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("Image saved")
       this.props.dispatch({
         type: 'ADD_PHOTO',
         payload: {
@@ -152,7 +152,7 @@ class PhotoEditor extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { userId: state.user_id }
+  return { userId: state.userId }
 }
 
 const mapDispatchToProps = dispatch => {
