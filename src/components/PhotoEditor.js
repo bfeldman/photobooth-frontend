@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Stage, Layer, Image, Line, Rect } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
+import TintMenu from './TintMenu'
 
 import TintMenu from './TintMenu'
 import StickerMenu from './StickerMenu'
@@ -59,7 +60,6 @@ class PhotoEditor extends React.Component {
     }
     if (this.state.sticker.enabled && this.state.sticker.image !== "") {
       this.setState({plantedStickers: [...this.state.plantedStickers, { points: [pos.x, pos.y], image: this.state.sticker.image }]}, () => console.log("PLANTED", this.state.plantedStickers))
-      
     }
   }
   
@@ -117,11 +117,11 @@ class PhotoEditor extends React.Component {
   setTint = (tintColor) => {
     this.setState({tint: tintColor})
   }
-  
+
   setSticker = (sticker) => {
     this.setState({sticker: {...this.state.sticker, image: sticker}})
   }
-  
+
   render() {
     const lineComponents = this.state.lines.map((line, idx) => {
       return <Line
@@ -193,6 +193,7 @@ class PhotoEditor extends React.Component {
           </Layer>
           
         </Stage>
+        
       </Container>
     )
   }
