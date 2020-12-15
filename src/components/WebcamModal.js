@@ -1,6 +1,6 @@
 import React from 'react'
 import Webcam from "react-webcam"
-import { Button, Modal, Image, Container } from 'semantic-ui-react'
+import { Button, Modal, Image, Container, Card } from 'semantic-ui-react'
 
 class WebcamModal extends React.Component {
   
@@ -45,34 +45,33 @@ class WebcamModal extends React.Component {
           onClose={() => this.setState({open: false})}
           onOpen={() => this.setState({open: true})}
           open={this.state.open}
+          basic
         >
           <Modal.Header>Take A Pic</Modal.Header>
           
           {this.state.webcamPreview ?
             <div className="live-preview">
               <Modal.Content>
-                <Container fluid>
-                  <Webcam
-                    ref={this.setRef}
-                    screenshotFormat="image/jpeg"
-                  />
+                <Container textAlign="center">
+                    <div><Webcam
+                      ref={this.setRef}
+                      screenshotFormat="image/jpeg"
+                    /></div>
+                    <Button circular={true} color="red" size="large" onClick={this.capture}>take pic</Button>
                 </Container>
               </Modal.Content>
-              <Modal.Actions>
-                <Button onClick={this.capture}>take pic</Button>
-              </Modal.Actions>
             </div>
           : null }
           
           {this.state.showCapture ?
             <div className="capture-preview">
               <Modal.Content>
-                <Image src={this.state.webcamPhoto} alt="preview" />
+                <Container textAlign="center">
+                  <Image centered={true} src={this.state.webcamPhoto} alt="preview" />
+                  <Button circular={true} color="red" size="large" onClick={this.retake}>retake</Button>
+                  <Button circular={true} color="green" size="large" onClick={this.sendToEditor}>edit pic</Button>
+              </Container>
               </Modal.Content>
-              <Modal.Actions>
-                <Button onClick={this.retake}>retake</Button>
-                <Button onClick={this.sendToEditor}>edit pic</Button>
-              </Modal.Actions>
             </div>
           : null }
                   
