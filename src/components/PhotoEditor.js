@@ -1,17 +1,21 @@
 import React from "react";
 import { connect } from 'react-redux'
-import { Stage, Layer, Image, Line } from "react-konva";
-import { triggerBase64Download } from 'react-base64-downloader';
+import { Stage, Layer, Image, Line, Rect } from "react-konva"
+import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
+import TintMenu from './TintMenu'
 
 
 class PhotoEditor extends React.Component {
   
   state = {
     image: "",
-    isDrawing: false,
-    brushEnabled: false,
-    lines: []
+    brush: {
+      enabled: false,
+      isDrawing: false
+    },
+    lines: [],
+    tint: ""
   }
   
   componentDidMount() {
@@ -25,38 +29,33 @@ class PhotoEditor extends React.Component {
   }
   
   componentWillUnmount() {
-    this.image.removeEventListener('load', this.handleLoad);
+    this.image.removeEventListener('load', this.loadImage);
   }
   
   loadImage() {
     this.image = new window.Image();
     this.image.src = this.props.src;
-    this.image.addEventListener('load', this.handleLoad);
+    this.image.addEventListener('load', () => {
+      this.setState({
+        image: this.image
+      })
+    })
   }
   
-  handleLoad = () => {
-    this.setState({
-      image: this.image
-    });
-  };
-  
   handleMouseDown = (e) => {
-    this.setState({isDrawing: true})
-    const pos = e.target.getStage().getPointerPosition()
-    if (this.state.brushEnabled) {
-    this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]})
+    if (this.state.brush.enabled) {
+      this.setState({brush: {...this.state.brush, isDrawing: true}})
+      const pos = e.target.getStage().getPointerPosition()
+      this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]})
     }
   }
   
   handleMouseUp = () => {
-    this.setState({isDrawing: false})
+    this.setState({brush: {...this.state.brush, isDrawing: false}})
   }
   
   handleMouseMove = (e) => {
-    if (!this.state.isDrawing) {
-      return;
-    }
-    if (this.state.brushEnabled) {
+    if (this.state.brush.enabled && this.state.brush.isDrawing) {
       const point = e.target.getStage().getPointerPosition();
       let lines = this.state.lines
       let lastLine = lines[lines.length - 1];
@@ -102,6 +101,10 @@ class PhotoEditor extends React.Component {
     
   }
   
+  setTint = (tintColor) => {
+    this.setState({tint: tintColor})
+  }
+  
   render() {
     const lineComponents = this.state.lines.map((line, idx) => {
       return <Line
@@ -117,37 +120,53 @@ class PhotoEditor extends React.Component {
     return (
       <Container className="photo-editor">
       
+      {/* TOOLBAR */}
       <div className="toolbar">
-        <Button onClick={() => this.setState({brushEnabled: !this.state.brushEnabled})}>
-          {this.state.brushEnabled ? "drawing!" : "not drawing"}
+        <TintMenu setTint={this.setTint}/>
+        <Button onClick={ () => this.setState({ brush: {...this.state.brush, enabled: !this.state.brush.enabled} }) }>
+          {this.state.brush.enabled ? "drawing!" : "not drawing"}
         </Button>
         <Button onClick={this.download}>DOWNLOAD</Button>
         <Button onClick={this.saveToGallery}>SAVE TO GALLERY</Button>
         <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
       </div>
       
+      
+      {/* CANVAS AREA */}
         <Stage
           ref={node => { this.stageRef = node}}
           width={this.state.image.width} 
           height={this.state.image.height}
+
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           onMouseUp={this.handleMouseUp}
         >
+          
           <Layer>
             <Image
               image={this.state.image}
               ref={node => {this.imageNode = node;}}
+            />
+            {/* tint */}
+            <Rect
+              x={0}
+              y={0}
+              width={this.state.image.width} 
+              height={this.state.image.height}
+              fill={this.state.tint}
+              opacity={0.3}
             />
           </Layer>
           
           <Layer>
             {lineComponents}
           </Layer>
-        
+          
         </Stage>
+        
       </Container>
-    );
+    )
   }
 }
 
