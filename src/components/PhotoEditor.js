@@ -3,7 +3,11 @@ import { connect } from 'react-redux'
 import { Stage, Layer, Image, Line, Rect } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
+
 import TintMenu from './TintMenu'
+import StickerMenu from './StickerMenu'
+import Sticker from './Sticker'
+
 
 
 class PhotoEditor extends React.Component {
@@ -15,7 +19,12 @@ class PhotoEditor extends React.Component {
       isDrawing: false
     },
     lines: [],
-    tint: ""
+    tint: "",
+    sticker: {
+      image: "",
+      enabled: false
+    },
+    plantedStickers: []
   }
   
   componentDidMount() {
@@ -43,10 +52,14 @@ class PhotoEditor extends React.Component {
   }
   
   handleMouseDown = (e) => {
+    const pos = e.target.getStage().getPointerPosition()
     if (this.state.brush.enabled) {
       this.setState({brush: {...this.state.brush, isDrawing: true}})
-      const pos = e.target.getStage().getPointerPosition()
       this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]})
+    }
+    if (this.state.sticker.enabled && this.state.sticker.image !== "") {
+      this.setState({plantedStickers: [...this.state.plantedStickers, { points: [pos.x, pos.y], image: this.state.sticker.image }]}, () => console.log("PLANTED", this.state.plantedStickers))
+      
     }
   }
   
@@ -105,6 +118,10 @@ class PhotoEditor extends React.Component {
     this.setState({tint: tintColor})
   }
   
+  setSticker = (sticker) => {
+    this.setState({sticker: {...this.state.sticker, image: sticker}})
+  }
+  
   render() {
     const lineComponents = this.state.lines.map((line, idx) => {
       return <Line
@@ -117,13 +134,21 @@ class PhotoEditor extends React.Component {
       />
     })
     
+    const stickerComponents = this.state.plantedStickers.map((sticker, idx) => {
+      return <Sticker key={idx} sticker={sticker} />
+    })
+    
     return (
       <Container className="photo-editor">
       
       {/* TOOLBAR */}
       <div className="toolbar">
-        <TintMenu setTint={this.setTint}/>
-        <Button onClick={ () => this.setState({ brush: {...this.state.brush, enabled: !this.state.brush.enabled} }) }>
+        <TintMenu setTint={this.setTint} />
+        <StickerMenu setSticker={this.setSticker} />
+        <Button onClick={ () => this.setState({ sticker: {...this.state.sticker, enabled: !this.state.sticker.enabled} }) }>
+          {this.state.sticker.enabled ? "stickers!" : "no stickers :("}
+        </Button>
+        <Button onClick={ () => this.setState({ brush: {...this.state.brush, enabled: !this.state.brush.enabled} }) } >
           {this.state.brush.enabled ? "drawing!" : "not drawing"}
         </Button>
         <Button onClick={this.download}>DOWNLOAD</Button>
@@ -155,8 +180,12 @@ class PhotoEditor extends React.Component {
               width={this.state.image.width} 
               height={this.state.image.height}
               fill={this.state.tint}
-              opacity={0.3}
+              opacity={0.25}
             />
+          </Layer>
+          
+          <Layer>
+            {stickerComponents}
           </Layer>
           
           <Layer>
@@ -164,7 +193,6 @@ class PhotoEditor extends React.Component {
           </Layer>
           
         </Stage>
-        
       </Container>
     )
   }
