@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Stage, Layer, Image, Line, Rect } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
-import TintMenu from './TintMenu'
 
 import TintMenu from './TintMenu'
 import StickerMenu from './StickerMenu'
@@ -59,7 +58,7 @@ class PhotoEditor extends React.Component {
       this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]})
     }
     if (this.state.sticker.enabled && this.state.sticker.image !== "") {
-      this.setState({plantedStickers: [...this.state.plantedStickers, { points: [pos.x, pos.y], image: this.state.sticker.image }]}, () => console.log("PLANTED", this.state.plantedStickers))
+      this.setState({plantedStickers: [...this.state.plantedStickers, { points: [pos.x, pos.y], image: this.state.sticker.image }]})
     }
   }
   
@@ -84,7 +83,6 @@ class PhotoEditor extends React.Component {
   }
   
   saveToGallery = () => {
-    console.log(this.props.userId)
     const base64_img = this.stageRef.getStage().toDataURL()
     const newPhoto = {
       user_id: this.props.userId,
