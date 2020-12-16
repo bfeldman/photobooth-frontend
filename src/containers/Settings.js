@@ -22,7 +22,6 @@ class Settings extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("updated!", data.user)
       this.props.dispatch({
         type: 'UPDATE_USERNAME',
         payload: {
@@ -39,7 +38,7 @@ class Settings extends React.Component {
           placeholder="username"
           value={this.state.username}
           onChange={(e, {value}) => {
-            this.setState({username: value}, () => console.log(this.state.username))
+            this.setState({username: value})
           }}
         />
         <Button onClick={this.updateUsername}>Update</Button>
