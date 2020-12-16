@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Studio from './containers/Studio'
 import Gallery from './containers/Gallery'
+import Settings from './containers/Settings'
 
 
 import Navbar from "./components/Navbar"
@@ -116,8 +117,8 @@ class App extends React.Component {
             <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
             <Route path="/studio" render={ () => <Studio /> } />
             <Route path="/gallery/:username" render={ 
-              ({match}) => <Gallery username={match.params.username} key={match.params.username} />
-            }/>
+              ({match}) => <Gallery username={match.params.username} key={match.params.username} /> } />
+            <Route path="/settings" render={ () => <Settings /> } />
           </Switch>
         </main>
       </div>

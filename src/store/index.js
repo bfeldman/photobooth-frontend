@@ -29,6 +29,11 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         photos: [...state.photos, action.payload.photo]
       })
+      
+    case 'UPDATE_USERNAME':
+      return Object.assign({}, state, {
+        username: action.payload.username
+      })
     
     default:
       return state
