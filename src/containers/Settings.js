@@ -1,12 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Form, Input, Button } from 'semantic-ui-react'
+import { Form, Input } from 'semantic-ui-react'
+
 
 
 class Settings extends React.Component {
   
   state = {
-    username: this.props.currentUsername
+    username: ""
+  }
+  
+  componentDidMount() {
   }
   
   updateUsername = () => {
@@ -28,20 +32,21 @@ class Settings extends React.Component {
           username: data.user.username
         }
       })
+      this.props.history.push(`/gallery/${this.state.username}`)
     })
   }
   
   render() {
     return (
-      <Form>
+      <Form onSubmit={this.updateUsername}>
         <Input
-          placeholder="username"
+          label="change username"
+          placeholder={this.props.storeUsername}
           value={this.state.username}
           onChange={(e, {value}) => {
             this.setState({username: value})
           }}
         />
-        <Button onClick={this.updateUsername}>Update</Button>
       </Form>
     )
   }
@@ -49,9 +54,9 @@ class Settings extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    currentUsername: state.username,
-    userId: state.userId
-  };
+    userId: state.userId,
+    storeUsername: state.username
+  }
 }
 
 const mapDispatchToProps = dispatch => {

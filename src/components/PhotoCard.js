@@ -30,7 +30,7 @@ function PhotoCard(props) {
         onOpen={() => setModalOpen(true)}
         open={modalOpen}
         size='small'
-        trigger={<Button color='red'><Icon name='trash' /></Button>}
+        trigger={<Button color='red'><Icon name='trash alternate'/></Button>}
       >
         <Header icon>
           <Icon name='trash alternate' />

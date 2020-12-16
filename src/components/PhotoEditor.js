@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { Stage, Layer, Image, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
@@ -27,7 +28,8 @@ class PhotoEditor extends React.Component {
     },
     plantedStickers: [],
     topText: "",
-    bottomText: ""
+    bottomText: "",
+    redirect: false
   }
   
   componentDidMount() {
@@ -111,6 +113,7 @@ class PhotoEditor extends React.Component {
           photo: data.photo
         }
       })
+      this.setState({redirect: true})
     })
   }
   
@@ -229,13 +232,18 @@ class PhotoEditor extends React.Component {
           <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
         </div>
         
+        {this.state.redirect ? <Redirect to={`/gallery/${this.props.username}`} /> : null }
+
       </Container>
     )
   }
 }
 
 const mapStateToProps = state => {
-  return { userId: state.userId }
+  return {
+    userId: state.userId,
+    username: state.username
+  }
 }
 
 const mapDispatchToProps = dispatch => {
