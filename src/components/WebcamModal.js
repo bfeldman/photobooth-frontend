@@ -1,6 +1,6 @@
 import React from 'react'
 import Webcam from "react-webcam"
-import { Button, Modal, Image, Container, Card } from 'semantic-ui-react'
+import { Button, Modal, Image, Container } from 'semantic-ui-react'
 
 class WebcamModal extends React.Component {
   
@@ -56,6 +56,7 @@ class WebcamModal extends React.Component {
                     <div><Webcam
                       ref={this.setRef}
                       screenshotFormat="image/jpeg"
+                      width={640}
                     /></div>
                     <Button circular={true} color="red" size="large" onClick={this.capture}>take pic</Button>
                 </Container>

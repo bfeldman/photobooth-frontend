@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from 'react-redux'
-import { Stage, Layer, Image, Line, Rect } from "react-konva"
+import { Stage, Layer, Image, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
 
 import TintMenu from './TintMenu'
 import StickerMenu from './StickerMenu'
 import Sticker from './Sticker'
+import TextInput from './TextInput'
 
 
 
@@ -24,11 +25,14 @@ class PhotoEditor extends React.Component {
       image: "",
       enabled: false
     },
-    plantedStickers: []
+    plantedStickers: [],
+    topText: "",
+    bottomText: ""
   }
   
   componentDidMount() {
-    this.loadImage();
+    this.loadImage()
+    this.setState({topText: "top text", bottomText: "bottom text"})
   }
   
   componentDidUpdate(oldProps) {
@@ -108,8 +112,6 @@ class PhotoEditor extends React.Component {
         }
       })
     })
-    
-    
   }
   
   setTint = (tintColor) => {
@@ -118,6 +120,10 @@ class PhotoEditor extends React.Component {
 
   setSticker = (sticker) => {
     this.setState({sticker: {...this.state.sticker, image: sticker}})
+  }
+  
+  setText = (position, text) => {
+    this.setState({[position]: text})
   }
 
   render() {
@@ -149,17 +155,15 @@ class PhotoEditor extends React.Component {
         <Button onClick={ () => this.setState({ brush: {...this.state.brush, enabled: !this.state.brush.enabled} }) } >
           {this.state.brush.enabled ? "drawing!" : "not drawing"}
         </Button>
-        <Button onClick={this.download}>DOWNLOAD</Button>
-        <Button onClick={this.saveToGallery}>SAVE TO GALLERY</Button>
-        <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
+        <TextInput setText={this.setText} />
       </div>
       
       
       {/* CANVAS AREA */}
         <Stage
           ref={node => { this.stageRef = node}}
-          width={this.state.image.width} 
-          height={this.state.image.height}
+          width={640} 
+          height={480}
 
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
@@ -187,10 +191,43 @@ class PhotoEditor extends React.Component {
           </Layer>
           
           <Layer>
+            <Text
+              text={this.state.topText}
+              fontFamily="Impact"
+              fontSize={70}
+              stroke='black'
+              strokeWidth={3}
+              fill="white"
+              align="center"
+              x={240}
+              y={30}
+              draggable
+            />
+            <Text
+              text={this.state.bottomText}
+              fontFamily="Impact"
+              fontSize={70}
+              stroke='black'
+              strokeWidth={3}
+              fill="white"
+              align="center"
+              x={180}
+              y={380}
+              draggable
+            />
+          </Layer>
+          
+          <Layer>
             {lineComponents}
           </Layer>
           
         </Stage>
+        
+        <div className="editor-footer">
+          <Button onClick={this.download}>DOWNLOAD</Button>
+          <Button onClick={this.saveToGallery}>SAVE TO GALLERY</Button>
+          <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
+        </div>
         
       </Container>
     )
