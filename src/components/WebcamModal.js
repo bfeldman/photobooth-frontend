@@ -42,10 +42,12 @@ class WebcamModal extends React.Component {
       <div className="webcam-modal">
         
         <Modal
+          closeIcon
           onClose={() => this.setState({open: false})}
           onOpen={() => this.setState({open: true})}
           open={this.state.open}
           basic
+          trigger={<Button>Open Camera</Button>}
         >
           <Modal.Header>Take A Pic</Modal.Header>
           

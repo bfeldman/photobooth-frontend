@@ -96,8 +96,11 @@ class Gallery extends React.Component {
         >
           <Modal.Content image>
             <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
-              { this.renderComments() }
+            
+            <Modal.Description>
+            { this.renderComments() }
             <CommentForm photoId={this.state.modalPhoto.id} displayNewComment={this.displayNewComment}/>
+            </Modal.Description>
           </Modal.Content>
         </Modal>
       </div>

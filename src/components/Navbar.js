@@ -50,6 +50,7 @@ class Navbar extends React.Component {
                         exact to="/settings"
                         name='settings'
                         active={activeItem === 'settings'}
+                        position="right"
                         onClick={this.handleItemClick}
                     >
                         ⚙️ Settings
