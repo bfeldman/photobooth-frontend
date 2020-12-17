@@ -66,15 +66,28 @@ class Navbar extends React.Component {
                     
                     </>
                 :
+                    <>
                     <Menu.Item
                         as={NavLink}
                         exact to="/login"
                         name='login'
+                        position="right"
                         active={activeItem === 'login'}
                         onClick={this.handleItemClick}
                     >
                         Log In
                     </Menu.Item>
+                    
+                    <Menu.Item
+                        as={NavLink}
+                        exact to="/signup"
+                        name='signup'
+                        active={activeItem === 'signup'}
+                        onClick={this.handleItemClick}
+                    >
+                        Sign Up
+                    </Menu.Item>
+                    </>
                 }
             </Menu>
         )
