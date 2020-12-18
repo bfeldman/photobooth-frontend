@@ -8,6 +8,7 @@ class WebcamModal extends React.Component {
     webcamPhoto: "",
     webcamPreview: true,
     showCapture: false,
+    webcamMirrored: true,
     open: true
   }
   
@@ -42,10 +43,12 @@ class WebcamModal extends React.Component {
       <div className="webcam-modal">
         
         <Modal
+          closeIcon
           onClose={() => this.setState({open: false})}
           onOpen={() => this.setState({open: true})}
           open={this.state.open}
           basic
+          trigger={<Button>Open Camera</Button>}
         >
           <Modal.Header>Take A Pic</Modal.Header>
           
@@ -55,10 +58,16 @@ class WebcamModal extends React.Component {
                 <Container textAlign="center">
                     <div><Webcam
                       ref={this.setRef}
-                      screenshotFormat="image/jpeg"
+                      mirrored={this.state.webcamMirrored}
+                      screenshotFormat="image/png"
+                      screenshotQuality={1}
                       width={640}
+                      forceScreenshotSourceSize={true}
                     /></div>
                     <Button circular={true} color="red" size="large" onClick={this.capture}>take pic</Button>
+                    <Button circular={true} size="large" onClick={() => this.setState({webcamMirrored: !this.state.webcamMirrored})}>
+                      Mirror: {this.state.webcamMirrored ? "ON" : "OFF" }
+                    </Button>
                 </Container>
               </Modal.Content>
             </div>
