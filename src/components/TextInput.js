@@ -8,7 +8,7 @@ function TextInput(props) {
       <Input
         placeholder="top text"
         onChange={(e, {value}) => props.setText("topText", value)}
-      />
+      /><br />
       <Input
         placeholder="bottom text"
         onChange={(e, {value}) => props.setText("bottomText", value)}

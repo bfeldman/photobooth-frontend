@@ -3,9 +3,8 @@ import { Dropdown } from 'semantic-ui-react'
 import Catherine from '../img/cath.png'
 
 const options = [
-  { key: 1, text: 'Catherine', value: Catherine },
+  { key: 1, text: 'Catherine', value: Catherine, image: {src: Catherine} }
 ]
-
 
 const StickerMenu = (props) => (
   <Dropdown
