@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { Stage, Layer, Image, Line, Rect, Text } from "react-konva"
+import { Stage, Layer, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
 
