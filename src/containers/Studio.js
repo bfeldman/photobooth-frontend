@@ -1,6 +1,6 @@
 import React from 'react'
 import WebcamModal from '../components/WebcamModal'
-import PhotoEditor from '../components/PhotoEditor'
+import PhotoEditor from './PhotoEditor'
 
 
 class Studio extends React.Component {

@@ -44,6 +44,18 @@ class Navbar extends React.Component {
                 </Menu.Item>
         
                 {this.props.loggedIn ?
+                    <>                
+                    <Menu.Item
+                        as={NavLink}
+                        exact to="/settings"
+                        name='settings'
+                        active={activeItem === 'settings'}
+                        position="right"
+                        onClick={this.handleItemClick}
+                    >
+                        ⚙️ Settings
+                    </Menu.Item>
+                    
                     <Menu.Item
                         name='logout'
                         active={activeItem === 'logout'}
@@ -51,16 +63,31 @@ class Navbar extends React.Component {
                     >
                         Log Out
                     </Menu.Item>
+                    
+                    </>
                 :
+                    <>
                     <Menu.Item
                         as={NavLink}
                         exact to="/login"
                         name='login'
+                        position="right"
                         active={activeItem === 'login'}
                         onClick={this.handleItemClick}
                     >
                         Log In
                     </Menu.Item>
+                    
+                    <Menu.Item
+                        as={NavLink}
+                        exact to="/signup"
+                        name='signup'
+                        active={activeItem === 'signup'}
+                        onClick={this.handleItemClick}
+                    >
+                        Sign Up
+                    </Menu.Item>
+                    </>
                 }
             </Menu>
         )

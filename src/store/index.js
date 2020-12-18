@@ -29,6 +29,17 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         photos: [...state.photos, action.payload.photo]
       })
+      
+    case 'DELETE_PHOTO':
+      const newPhotos = state.photos.filter(photo => photo.id !== action.payload.photoId)
+      return Object.assign({}, state, {
+        photos: newPhotos
+      })
+      
+    case 'UPDATE_USERNAME':
+      return Object.assign({}, state, {
+        username: action.payload.username
+      })
     
     default:
       return state

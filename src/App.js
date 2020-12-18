@@ -1,9 +1,10 @@
 import React from 'react'
-import { Route, Switch, withRouter} from 'react-router-dom'
+import { Route, Switch, Redirect, withRouter} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Studio from './containers/Studio'
 import Gallery from './containers/Gallery'
+import Settings from './containers/Settings'
 
 
 import Navbar from "./components/Navbar"
@@ -112,12 +113,25 @@ class App extends React.Component {
         <main>
           <Switch>
             {/* <Route exact path="/" render={Home} /> */}
-            <Route path="/signup" render={ () => <Signup submitHandler={this.signupHandler} /> } />
-            <Route path="/login" render={ () => <Login submitHandler={this.loginHandler} /> } />
-            <Route path="/studio" render={ () => <Studio /> } />
+            
+            <Route exact path="/" >
+              <Redirect to="/gallery" />
+            </Route>
+            
+            <Route path="/signup" >
+              <Signup submitHandler={this.signupHandler} />
+            </Route>
+            
+            <Route path="/login" >
+              <Login submitHandler={this.loginHandler} />
+            </Route>
+            
+            <Route path="/studio" component={Studio} />
+            
             <Route path="/gallery/:username" render={ 
-              ({match}) => <Gallery username={match.params.username} key={match.params.username} />
-            }/>
+              ({match}) => <Gallery username={match.params.username} key={match.params.username} /> } />
+              
+            <Route path="/settings" component={Settings} />
           </Switch>
         </main>
       </div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Card, Modal, Image } from 'semantic-ui-react'
 
 import PhotoCard from '../components/PhotoCard'
@@ -71,8 +72,13 @@ class Gallery extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("DELETED PHOTO", photoId)
       this.setState({ user: {...this.state.user, photos: updatedPhotos} })
+      this.props.dispatch({
+        type: 'DELETE_PHOTO',
+        payload: {
+          photoId: photoId
+        }
+      })
     })
   }
   
@@ -90,8 +96,11 @@ class Gallery extends React.Component {
         >
           <Modal.Content image>
             <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
-              { this.renderComments() }
+            
+            <Modal.Description>
+            { this.renderComments() }
             <CommentForm photoId={this.state.modalPhoto.id} displayNewComment={this.displayNewComment}/>
+            </Modal.Description>
           </Modal.Content>
         </Modal>
       </div>
@@ -99,4 +108,10 @@ class Gallery extends React.Component {
   }
 }
 
-export default Gallery
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Gallery)
