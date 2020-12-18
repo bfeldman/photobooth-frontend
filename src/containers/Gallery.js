@@ -21,6 +21,7 @@ class Gallery extends React.Component {
     }
   }
   
+  /* fetches photos based on username in path */
   componentDidMount() {
     fetch(`http://localhost:3000/api/v1/users/${this.props.username}`)
     .then(response => response.json())
@@ -29,6 +30,7 @@ class Gallery extends React.Component {
     })
   }
   
+  /* opens photo modal */
   openModal = (photo) => {
     this.setState({
       modalPhoto: photo,
@@ -36,6 +38,7 @@ class Gallery extends React.Component {
     })
   }
   
+  /* renders a photocard for each one in the array, sorting in reverse chron first */
   renderPhotoCards = () => {
     const photoArray = this.state.user.photos.sort((a, b) => b.id - a.id)
     return photoArray.map(photo =>
@@ -48,10 +51,12 @@ class Gallery extends React.Component {
       />)   
   }
   
+  /* renders comments for whatever photo is displayed in the modal */
   renderComments = () => {
     return this.state.modalPhoto.comments.map(comment => <Comment key={comment.id} comment={comment} />)
   }
   
+  /* adds new comment to to state so it can render and update comment count without reload */
   displayNewComment = (commentObj) => {
     const newModalPhoto = {...this.state.modalPhoto, comments: this.state.modalPhoto.comments.concat(commentObj)}
     let newPhotos = this.state.user.photos.filter(photo => photo.id !== newModalPhoto.id ).concat(newModalPhoto)
@@ -61,6 +66,7 @@ class Gallery extends React.Component {
     })
   }
   
+  /* filters makes fetch call and then updates state with filtered photo array */
   deletePhoto = (photoId) => {
     const updatedPhotos = this.state.user.photos.filter(photo => photo.id !== photoId)
     const token = localStorage.getItem('token')

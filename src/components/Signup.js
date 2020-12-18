@@ -13,6 +13,7 @@ class Signup extends React.Component {
         this.setState({ [event.target.name]: event.target.value })
     }
     
+    /* sends state object up to signup handler in App.js for processing */
     submitHandler = (event) => {
         event.preventDefault()
         this.props.submitHandler(this.state)

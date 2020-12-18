@@ -1,3 +1,5 @@
+/* handle comment input and posting */
+
 import React from 'react'
 import { connect } from 'react-redux'
 import { Input, Icon } from 'semantic-ui-react'
@@ -12,6 +14,7 @@ class CommentForm extends React.Component {
     this.setState({[e.target.name]: e.target.value})
   }
   
+  /* submits comment on enter press*/
   handleKeyPress = (e) => {
     if(e.key === 'Enter'){
       this.submitComment()
@@ -34,6 +37,7 @@ class CommentForm extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
+      /* sends comment up to modal to be added to redux state and displayed, then resets form */
       this.props.displayNewComment(data.comment)
       this.setState({comment: ""})
     })

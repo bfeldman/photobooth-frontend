@@ -25,6 +25,7 @@ class Studio extends React.Component {
     this.setState({photoEditorVisible: true})
   }
   
+  /* renders webcam feed or photo editor tool based on user inputs and whether or not they've captured a photo */
   render() {
     return (
       <div className="Studio">

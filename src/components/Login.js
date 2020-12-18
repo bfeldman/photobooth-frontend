@@ -11,6 +11,7 @@ class Login extends React.Component {
         this.setState({ [event.target.name]: event.target.value })
     }
     
+    /* sends state object up to submit handler in App.js for processing*/
     submitHandler = (event) => {
         event.preventDefault()
         this.props.submitHandler(this.state)

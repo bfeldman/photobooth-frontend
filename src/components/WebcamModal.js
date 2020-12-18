@@ -15,7 +15,8 @@ class WebcamModal extends React.Component {
   setRef = (webcam) => {
     this.webcam = webcam
   }
- 
+  
+  /* captures current webcam feed and sets to state */
   capture = () => {
     const photo = this.webcam.getScreenshot();
     this.setState({
@@ -25,6 +26,7 @@ class WebcamModal extends React.Component {
     })
   }
   
+  /* resets state to wipe photo and show webcam feed */
   retake = () => {
     this.setState({
       webcamPhoto: "",
@@ -33,6 +35,7 @@ class WebcamModal extends React.Component {
     })
   }
   
+  /* closes capture modal and sends photo to editor tool */
   sendToEditor = () => {
     this.setState({open: false})
     this.props.sendToEditor(this.state.webcamPhoto)
@@ -41,17 +44,17 @@ class WebcamModal extends React.Component {
   render() {
     return(
       <div className="webcam-modal">
-        
         <Modal
           closeIcon
           onClose={() => this.setState({open: false})}
           onOpen={() => this.setState({open: true})}
           open={this.state.open}
           basic
-          trigger={<Button>Open Camera</Button>}
+          trigger={<Button>Open Camera</Button>} /* button in case user closes modal */
         >
           <Modal.Header>Take A Pic</Modal.Header>
           
+          /* shows webcam preview and lets users take picture */
           {this.state.webcamPreview ?
             <div className="live-preview">
               <Modal.Content>
@@ -64,7 +67,9 @@ class WebcamModal extends React.Component {
                       width={640}
                       forceScreenshotSourceSize={true}
                     /></div>
+                    /* shutter button */
                     <Button circular={true} color="red" size="large" onClick={this.capture}>take pic</Button>
+                    /* toggle mirrored camera */
                     <Button circular={true} size="large" onClick={() => this.setState({webcamMirrored: !this.state.webcamMirrored})}>
                       Mirror: {this.state.webcamMirrored ? "ON" : "OFF" }
                     </Button>
@@ -73,6 +78,7 @@ class WebcamModal extends React.Component {
             </div>
           : null }
           
+          /* lets user verify captured photo before sending to editor */
           {this.state.showCapture ?
             <div className="capture-preview">
               <Modal.Content>

@@ -1,6 +1,9 @@
+/* renders the dropdown menus for each tint option*/
+
 import React from 'react'
 import { Dropdown } from 'semantic-ui-react'
 
+/* tint options array */
 const options = [
   { key: 1, text: 'Red', value: 'red' },
   { key: 2, text: 'Blue', value: 'blue' },
@@ -15,6 +18,7 @@ const TintMenu = (props) => (
     clearable
     options={options}
     selection
+    /* changes PhotoEditor tint state to whatever's selected */
     onChange={(e, {value}) => props.setTint(value)}
   />
 )

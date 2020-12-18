@@ -1,8 +1,9 @@
+/* controlled inputs that change the Impact-font text on the photo */
+
 import React from 'react'
 import { Input } from 'semantic-ui-react'
 
 function TextInput(props) {
-  
   return(
     <div>
       <Input

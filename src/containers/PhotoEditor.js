@@ -37,10 +37,14 @@ class PhotoEditor extends React.Component {
     this.setState({topText: "top text", bottomText: "bottom text"})
   }
   
+  /* determines behavior based on what tool is selected */
   handleMouseDown = (e) => {
     const pos = e.target.getStage().getPointerPosition()
+    /* brush capture */
     if (this.state.brush.enabled) {
+      /* isDrawing enables movement capture */
       this.setState({brush: {...this.state.brush, isDrawing: true}})
+      /* creates a new line being drawn with each mousedown */
       this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]})
     }
     if (this.state.sticker.enabled && this.state.sticker.image !== "") {
@@ -49,12 +53,15 @@ class PhotoEditor extends React.Component {
   }
   
   handleMouseUp = () => {
+    /* makes sure drawing is no longer enabled */
     this.setState({brush: {...this.state.brush, isDrawing: false}})
   }
   
   handleMouseMove = (e) => {
     if (this.state.brush.enabled && this.state.brush.isDrawing) {
+      /* gets x,y coordinates from Konva */
       const point = e.target.getStage().getPointerPosition();
+      /* adds new points to most recent line in the state array */
       let lines = this.state.lines
       let lastLine = lines[lines.length - 1];
       lastLine.points = lastLine.points.concat([point.x, point.y]);
@@ -63,11 +70,13 @@ class PhotoEditor extends React.Component {
     }
   }
   
+  /* file download function */
   download = () => {
     const base64_img = this.stageRef.getStage().toDataURL()
     triggerBase64Download(base64_img, 'photobooth_img')
   }
   
+  /* saves new photo to backend */
   saveToGallery = () => {
     const base64_img = this.stageRef.getStage().toDataURL()
     const newPhoto = {
@@ -87,28 +96,34 @@ class PhotoEditor extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
+      /* update redux state */
       this.props.dispatch({
         type: 'ADD_PHOTO',
         payload: {
           photo: data.photo
         }
       })
+      /* render redirect that takes user to their gallery */
       this.setState({redirect: true})
     })
   }
   
+  /* changes color selected for tint in state */
   setTint = (tintColor) => {
     this.setState({tint: tintColor})
   }
 
+  /* changes sticker selected for tint in state */
   setSticker = (sticker) => {
     this.setState({sticker: {...this.state.sticker, image: sticker}})
   }
   
+  /* handles changes to both top and bottom text inputs */
   setText = (position, text) => {
     this.setState({[position]: text})
   }
   
+  /* disables tool if the other is enabled, handles disabling of both */
   toolToggle = (tool) => {
     if (tool === "sticker") {
       this.setState({
@@ -124,6 +139,7 @@ class PhotoEditor extends React.Component {
   }
 
   render() {
+    /* renders line components from state */
     const lineComponents = this.state.lines.map((line, idx) => {
       return <Line
         key={idx}
@@ -135,6 +151,7 @@ class PhotoEditor extends React.Component {
       />
     })
     
+    /* renders stickers from state */
     const stickerComponents = this.state.plantedStickers.map((sticker, idx) => {
       return <Sticker key={idx} sticker={sticker} />
     })
@@ -185,9 +202,9 @@ class PhotoEditor extends React.Component {
             >
               
               <Layer>
-                
+                {/* WEBCAM CAPTURE */}
                 <Background src={this.props.src} />
-                {/* tint */}
+                {/* TINT */}
                 <Rect
                   x={0}
                   y={0}
@@ -198,10 +215,12 @@ class PhotoEditor extends React.Component {
                 />
               </Layer>
               
+              {/* STICKERS */}
               <Layer>
                 {stickerComponents}
               </Layer>
               
+              {/* MEME TEXT */}
               <Layer>
                 <Text
                   text={this.state.topText}
@@ -229,6 +248,7 @@ class PhotoEditor extends React.Component {
                 />
               </Layer>
               
+              {/* DOODLE LINES */}
               <Layer>
                 {lineComponents}
               </Layer>
@@ -237,6 +257,7 @@ class PhotoEditor extends React.Component {
           </Grid.Column>
         </Grid.Row>
         
+        {/* FILE ACTIONS */}
         <Grid.Row>
           <Grid.Column>
             <Button onClick={this.download}>DOWNLOAD</Button>

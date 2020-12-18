@@ -1,3 +1,5 @@
+/* takes in the captured webcam image as a prop and loads it onto the canvas*/
+
 import React from 'react'
 import { Image } from "react-konva"
 import useImage from 'use-image'

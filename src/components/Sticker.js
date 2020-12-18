@@ -1,3 +1,5 @@
+/* creates a Konva Image component to display on canvas at coordinates x and y */
+
 import React from 'react'
 import { Image } from "react-konva"
 import useImage from 'use-image'

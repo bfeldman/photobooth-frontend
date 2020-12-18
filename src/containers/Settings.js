@@ -13,6 +13,7 @@ class Settings extends React.Component {
   componentDidMount() {
   }
   
+  /* sends patch request and then updates redux state */
   updateUsername = () => {
     const token = localStorage.getItem("token")
     fetch(`http://localhost:3000/api/v1/users/${this.props.userId}`, {
@@ -36,6 +37,7 @@ class Settings extends React.Component {
     })
   }
   
+  /* renders form with current user details from Redux state */
   render() {
     return (
       <Form onSubmit={this.updateUsername}>
