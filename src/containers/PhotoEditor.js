@@ -5,10 +5,11 @@ import { Stage, Layer, Image, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
 import { Container, Button } from 'semantic-ui-react'
 
-import TintMenu from './TintMenu'
-import StickerMenu from './StickerMenu'
-import Sticker from './Sticker'
-import TextInput from './TextInput'
+import Background from '../components/Background'
+import TintMenu from '../components/TintMenu'
+import StickerMenu from '../components/StickerMenu'
+import Sticker from '../components/Sticker'
+import TextInput from '../components/TextInput'
 
 
 
@@ -33,28 +34,7 @@ class PhotoEditor extends React.Component {
   }
   
   componentDidMount() {
-    this.loadImage()
     this.setState({topText: "top text", bottomText: "bottom text"})
-  }
-  
-  componentDidUpdate(oldProps) {
-    if (oldProps.src !== this.props.src) {
-      this.loadImage();
-    }
-  }
-  
-  componentWillUnmount() {
-    this.image.removeEventListener('load', this.loadImage);
-  }
-  
-  loadImage() {
-    this.image = new window.Image();
-    this.image.src = this.props.src;
-    this.image.addEventListener('load', () => {
-      this.setState({
-        image: this.image
-      })
-    })
   }
   
   handleMouseDown = (e) => {
@@ -144,7 +124,7 @@ class PhotoEditor extends React.Component {
     const stickerComponents = this.state.plantedStickers.map((sticker, idx) => {
       return <Sticker key={idx} sticker={sticker} />
     })
-    
+        
     return (
       <Container className="photo-editor">
       
@@ -174,16 +154,14 @@ class PhotoEditor extends React.Component {
         >
           
           <Layer>
-            <Image
-              image={this.state.image}
-              ref={node => {this.imageNode = node;}}
-            />
+            
+            <Background src={this.props.src} />
             {/* tint */}
             <Rect
               x={0}
               y={0}
-              width={this.state.image.width} 
-              height={this.state.image.height}
+              width={640} 
+              height={480}
               fill={this.state.tint}
               opacity={0.25}
             />
