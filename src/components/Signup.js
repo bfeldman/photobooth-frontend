@@ -6,7 +6,8 @@ class Signup extends React.Component {
     state = {
         username: "",
         password: "",
-        email_address: ""
+        email_address: "",
+        is_public: true
     }
     
     changeHandler = (event) => {

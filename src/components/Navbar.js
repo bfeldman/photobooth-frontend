@@ -43,10 +43,10 @@ class Navbar extends React.Component {
                     🎨 Studio
                 </Menu.Item>
         
-                /* renders different options based on login status */
+                {/* renders different options based on login status */}
                 {this.props.loggedIn ?
                     <>                
-                    /* options when logged in */
+                    {/* options when logged in */}
                     <Menu.Item
                         as={NavLink}
                         exact to="/settings"
@@ -68,8 +68,8 @@ class Navbar extends React.Component {
                     
                     </>
                 :
-                    /* options when logged out */
                     <>
+                    {/* options when logged out */}
                     <Menu.Item
                         as={NavLink}
                         exact to="/login"

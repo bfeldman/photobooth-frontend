@@ -50,11 +50,11 @@ class WebcamModal extends React.Component {
           onOpen={() => this.setState({open: true})}
           open={this.state.open}
           basic
-          trigger={<Button>Open Camera</Button>} /* button in case user closes modal */
+          trigger={<Button>Open Camera</Button> /* button in case user closes modal */}
         >
           <Modal.Header>Take A Pic</Modal.Header>
           
-          /* shows webcam preview and lets users take picture */
+          {/* shows webcam preview and lets users take picture */}
           {this.state.webcamPreview ?
             <div className="live-preview">
               <Modal.Content>
@@ -67,9 +67,9 @@ class WebcamModal extends React.Component {
                       width={640}
                       forceScreenshotSourceSize={true}
                     /></div>
-                    /* shutter button */
+                    {/* shutter button */}
                     <Button circular={true} color="red" size="large" onClick={this.capture}>take pic</Button>
-                    /* toggle mirrored camera */
+                    {/* toggle mirrored camera */}
                     <Button circular={true} size="large" onClick={() => this.setState({webcamMirrored: !this.state.webcamMirrored})}>
                       Mirror: {this.state.webcamMirrored ? "ON" : "OFF" }
                     </Button>
@@ -78,7 +78,7 @@ class WebcamModal extends React.Component {
             </div>
           : null }
           
-          /* lets user verify captured photo before sending to editor */
+          {/* lets user verify captured photo before sending to editor */}
           {this.state.showCapture ?
             <div className="capture-preview">
               <Modal.Content>
