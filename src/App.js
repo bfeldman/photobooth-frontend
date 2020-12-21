@@ -30,7 +30,8 @@ class App extends React.Component {
           payload: {
             userId: data.user.id,
             username: data.user.username,
-            photos: data.user.photos
+            photos: data.user.photos,
+            isPublic: data.user.is_public
           }
         })
       })

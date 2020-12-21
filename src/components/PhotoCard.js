@@ -13,7 +13,7 @@ function PhotoCard(props) {
   
   return(
     <Card>
-      /* shows photo, timestamp, and comment count button. comment count button opens display modal in Gallery */
+      {/* shows photo, timestamp, and comment count button. comment count button opens display modal in Gallery */}
       <Image src={props.photo.base64_src} />
       <Card.Meta>
         {props.photo.created_at}
@@ -24,7 +24,7 @@ function PhotoCard(props) {
         {props.photo.comments.length}
       </Button>
       
-      /* delete button only renders if user on display is the same as the user who is logged in */
+      {/* delete button only renders if user on display is the same as the user who is logged in */}
       {props.currentUserId === props.posterId ? 
       <Modal
         basic

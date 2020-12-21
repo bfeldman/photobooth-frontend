@@ -4,6 +4,7 @@ const initialState = {
   userId: null,
   username: "",
   photos: [],
+  userIsPublic: null,
   loggedIn: false
 }
 
@@ -16,6 +17,7 @@ const reducer = (state = initialState, action) => {
         userId: action.payload.userId,
         username: action.payload.username,
         photos: action.payload.photos,
+        userIsPublic: action.payload.isPublic,
         loggedIn: true
       })
     
@@ -25,6 +27,7 @@ const reducer = (state = initialState, action) => {
         userId: null,
         username: "",
         photos: [],
+        userIsPublic: null,
         loggedIn: false
       })
     
@@ -45,6 +48,11 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_USERNAME':
       return Object.assign({}, state, {
         username: action.payload.username
+      })
+      
+    case 'UPDATE_IS_PUBLIC':
+      return Object.assign({}, state, {
+        userIsPublic: action.payload.userIsPublic
       })
     
     default:
