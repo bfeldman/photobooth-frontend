@@ -79,11 +79,21 @@ class PhotoEditor extends React.Component {
   /* saves new photo to backend */
   saveToGallery = () => {
     const base64_img = this.stageRef.getStage().toDataURL()
+    const byteString = atob(base64_img.split(',')[1])
+    
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([ab], { type: 'image/png', name: 'photo' })
+    console.log(blob)
+    
     const newPhoto = {
       user_id: this.props.userId,
       is_public: true,
       base64_src: base64_img
-    }    
+    }
     const token = localStorage.getItem("token")
     fetch(`http://localhost:3000/api/v1/photos/`, {
       method: "POST",
