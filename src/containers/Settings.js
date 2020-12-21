@@ -7,7 +7,8 @@ import { Form, Input, Checkbox } from 'semantic-ui-react'
 class Settings extends React.Component {
   
   state = {
-    username: "",
+    username: this.props.storeUsername,
+    isPublic: this.props.storeUserIsPublic
   }
   
   componentDidMount() {
@@ -78,7 +79,8 @@ class Settings extends React.Component {
       <Checkbox
         toggle
         label="Profile visibility"
-        defaultChecked={this.props.storeUserIsPublic}
+        value={this.state.isPublic}
+        checked={this.props.storeUserIsPublic}
         onClick={this.togglePublic}
       />
       </>
