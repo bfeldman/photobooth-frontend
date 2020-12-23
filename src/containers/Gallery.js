@@ -30,7 +30,6 @@ class Gallery extends React.Component {
       if (data.user.is_public) {
         this.setState({user: data.user})
       } else if (this.props.soughtUser === this.props.loggedInUser.username) {
-        console.log("hit")
         this.setState({user: this.props.loggedInUser, pageIsPrivate: false})
       } else {
         this.setState({pageIsPrivate: true})
@@ -52,7 +51,7 @@ class Gallery extends React.Component {
     return photoArray.map(photo =>
       <PhotoCard
         photo={photo}
-        posterId={this.state.user.userId}
+        posterId={this.state.user.id}
         key={photo.id}
         openModal={this.openModal}
         deletePhoto={this.deletePhoto}

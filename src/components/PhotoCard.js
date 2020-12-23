@@ -54,8 +54,11 @@ function PhotoCard(props) {
   )
 }
 
-function mapStateToProps(state) {
-  return { currentUserId: state.userId };
+function mapStateToProps(state, ownProps) {
+  return {
+    currentUserId: state.userId,
+    posterId: ownProps.posterId
+  };
 } 
 
 export default connect(mapStateToProps)(PhotoCard)
