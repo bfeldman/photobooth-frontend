@@ -78,7 +78,7 @@ class Settings extends React.Component {
         <Form.Field>
           <Checkbox
             toggle
-            label="Profile public visibility"
+            label={this.props.storeUserIsPublic ? "Profile visibility: PUBLIC" : "Profile visibility: PRIVATE"}
             defaultChecked={this.props.storeUserIsPublic}
             onClick={this.togglePublic}
           />

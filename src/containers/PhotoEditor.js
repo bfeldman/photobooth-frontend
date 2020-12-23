@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Stage, Layer, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
-import { Container, Button, Grid } from 'semantic-ui-react'
+import { Container, Button, Grid, Rail, Segment } from 'semantic-ui-react'
 
 import Background from '../components/Background'
 import TintMenu from '../components/TintMenu'
@@ -34,7 +34,6 @@ class PhotoEditor extends React.Component {
   }
   
   componentDidMount() {
-    this.setState({topText: "top text", bottomText: "bottom text"})
   }
   
   /* determines behavior based on what tool is selected */
@@ -156,46 +155,41 @@ class PhotoEditor extends React.Component {
       return <Sticker key={idx} sticker={sticker} />
     })
         
-    return (
-      <Container className="photo-editor">
-      
-      {/* TOOLBAR */}
-        <Grid columns='equal' relaxed="very" container={true} centered={true} divided={true}>
-          <Grid.Row>
-            <Grid.Column>
-              <TintMenu setTint={this.setTint} />
-            </Grid.Column>
-            <Grid.Column>
-              <TextInput setText={this.setText} />
-            </Grid.Column>
-          </Grid.Row>
-          
-          <Grid.Row>
-            <Grid.Column>
-              <StickerMenu setSticker={this.setSticker} /><br />
-              <Button
-                onClick={() => this.toolToggle("sticker")}
-              >
-                STICKER TOOL: {this.state.sticker.enabled ? "ENABLED" : "DISABLED"}
-                </Button>
-            </Grid.Column>
-            <Grid.Column>
-              <Button
-                onClick={() => this.toolToggle("brush")} >
-                PAINTBRUSH: {this.state.brush.enabled ? "ENABLED" : "DISABLED"}
-            </Button>
-            </Grid.Column>
-          </Grid.Row>
-      
-      
-      {/* CANVAS AREA */}
+    return (      
+      <Grid columns="equal">
         <Grid.Row>
           <Grid.Column>
+            
+            {/* TOOLBAR */}
+              <Rail internal position='right'>
+                <Segment><TintMenu setTint={this.setTint} /></Segment>
+                <Segment><TextInput setText={this.setText} /></Segment>
+                
+                <Segment>
+                  <StickerMenu setSticker={this.setSticker} /><br />
+                  <Button
+                    onClick={() => this.toolToggle("sticker")}
+                    color={this.state.sticker.enabled ? "green" : null}
+                  >
+                    STICKER TOOL: {this.state.sticker.enabled ? "ENABLED" : "DISABLED"}
+                  </Button>
+                </Segment>
+              
+                <Segment>
+                  <Button
+                    onClick={() => this.toolToggle("brush")}
+                    color={this.state.brush.enabled ? "green" : null}
+                  >
+                    PAINTBRUSH: {this.state.brush.enabled ? "ENABLED" : "DISABLED"}
+                  </Button>
+                </Segment>
+              </Rail>
+      
+      {/* CANVAS AREA */}
             <Stage
               ref={node => { this.stageRef = node}}
               width={640} 
               height={480}
-    
               onMouseDown={this.handleMouseDown}
               onMouseMove={this.handleMouseMove}
               onMouseUp={this.handleMouseUp}
@@ -254,12 +248,12 @@ class PhotoEditor extends React.Component {
               </Layer>
               
             </Stage>
+          
           </Grid.Column>
         </Grid.Row>
-        
         {/* FILE ACTIONS */}
         <Grid.Row>
-          <Grid.Column>
+          <Grid.Column >
             <Button onClick={this.download}>DOWNLOAD</Button>
           </Grid.Column>
           <Grid.Column>
@@ -269,12 +263,10 @@ class PhotoEditor extends React.Component {
             <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
           </Grid.Column>
         </Grid.Row>
-        
+        {this.state.redirect ? <Redirect to={`/gallery/${this.props.username}`} /> : null }
         </Grid>
         
-        {this.state.redirect ? <Redirect to={`/gallery/${this.props.username}`} /> : null }
-
-      </Container>
+        
     )
   }
 }
