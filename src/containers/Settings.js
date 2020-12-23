@@ -7,7 +7,7 @@ import { Form, Input, Checkbox } from 'semantic-ui-react'
 class Settings extends React.Component {
   
   state = {
-    username: this.props.storeUsername,
+    username: this.props.storeUsername
   }
   
   componentDidMount() {
@@ -61,6 +61,7 @@ class Settings extends React.Component {
   
   /* renders form with current user details from Redux state */
   render() {
+    console.log("PROPS", this.props)
     return (
       <>
       <Form onSubmit={this.updateUsername}>
@@ -77,8 +78,8 @@ class Settings extends React.Component {
         <Form.Field>
           <Checkbox
             toggle
-            label="Profile visibility"
-            checked={this.props.storeUserIsPublic || false}
+            label="Profile public visibility"
+            defaultChecked={this.props.storeUserIsPublic}
             onClick={this.togglePublic}
           />
         </Form.Field>

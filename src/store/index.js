@@ -1,10 +1,12 @@
 import { createStore } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist' // imports from redux-persist
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 const initialState = {
   userId: null,
   username: "",
   photos: [],
-  userIsPublic: null,
+  userIsPublic: true,
   loggedIn: false
 }
 
@@ -13,12 +15,11 @@ const reducer = (state = initialState, action) => {
     
     /* sets useful user info in redux state */
     case 'SET_USER':
-      console.log(action.payload)
       return Object.assign({}, state, {
         userId: action.payload.userId,
         username: action.payload.username,
         photos: action.payload.photos,
-        userIsPublic: action.payload.isPublic,
+        userIsPublic: action.payload.userIsPublic,
         loggedIn: true
       })
     
@@ -61,6 +62,16 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const persistConfig = {
+  key: 'root',
+  storage: storage
+  //whitelist: ['userId', 'username', 'userIsPublic', 'loggedIn']
+}
 
-export default store
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+const store = createStore(persistedReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+const persistor = persistStore(store)
+
+export {store, persistor}
