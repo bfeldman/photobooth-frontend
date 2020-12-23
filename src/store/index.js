@@ -13,6 +13,7 @@ const reducer = (state = initialState, action) => {
     
     /* sets useful user info in redux state */
     case 'SET_USER':
+      console.log(action.payload)
       return Object.assign({}, state, {
         userId: action.payload.userId,
         username: action.payload.username,

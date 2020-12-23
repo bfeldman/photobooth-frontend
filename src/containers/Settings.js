@@ -8,7 +8,6 @@ class Settings extends React.Component {
   
   state = {
     username: this.props.storeUsername,
-    isPublic: this.props.storeUserIsPublic
   }
   
   componentDidMount() {
@@ -57,7 +56,6 @@ class Settings extends React.Component {
           userIsPublic: data.user.is_public
         }
       })
-      console.log(this.props)
     })
   }
   
@@ -66,23 +64,25 @@ class Settings extends React.Component {
     return (
       <>
       <Form onSubmit={this.updateUsername}>
-        <Input
-          label="change username"
-          placeholder={this.props.storeUsername}
-          value={this.state.username}
-          onChange={(e, {value}) => {
-            this.setState({username: value})
-          }}
-        />
+        <Form.Field>
+          <Input
+            label="change username"
+            placeholder={this.props.storeUsername}
+            value={this.state.username}
+            onChange={(e, {value}) => {
+              this.setState({username: value})
+            }}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Checkbox
+            toggle
+            label="Profile visibility"
+            checked={this.props.storeUserIsPublic || false}
+            onClick={this.togglePublic}
+          />
+        </Form.Field>
       </Form>
-      
-      <Checkbox
-        toggle
-        label="Profile visibility"
-        value={this.state.isPublic}
-        checked={this.props.storeUserIsPublic}
-        onClick={this.togglePublic}
-      />
       </>
     )
   }

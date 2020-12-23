@@ -14,8 +14,9 @@ class Gallery extends React.Component {
     modalPhoto: {
       comments: []
     },
+    pageIsPrivate: false,
     user: {
-      id: null,
+      userId: null,
       username: "",
       photos: []
     }
@@ -23,10 +24,17 @@ class Gallery extends React.Component {
   
   /* fetches photos based on username in path */
   componentDidMount() {
-    fetch(`http://localhost:3000/api/v1/users/${this.props.username}`)
+    fetch(`http://localhost:3000/api/v1/users/${this.props.soughtUser}`)
     .then(response => response.json())
-    .then(data => {
-      this.setState({user: data.user})
+    .then((data) => {
+      if (data.user.is_public) {
+        this.setState({user: data.user})
+      } else if (this.props.soughtUser === this.props.loggedInUser.username) {
+        console.log("hit")
+        this.setState({user: this.props.loggedInUser, pageIsPrivate: false})
+      } else {
+        this.setState({pageIsPrivate: true})
+      }  
     })
   }
   
@@ -44,7 +52,7 @@ class Gallery extends React.Component {
     return photoArray.map(photo =>
       <PhotoCard
         photo={photo}
-        posterId={this.state.user.id}
+        posterId={this.state.user.userId}
         key={photo.id}
         openModal={this.openModal}
         deletePhoto={this.deletePhoto}
@@ -90,8 +98,14 @@ class Gallery extends React.Component {
   
   render() {
     return(
+      <>
+      <h1>{`${this.props.soughtUser}'s Pics`}</h1>
+      {this.state.pageIsPrivate ?
+        <p>This user is private</p>
+      
+      :
+      
       <div className="gallery">
-        <h1>{`${this.props.username}'s Pics`}</h1>
         <Card.Group itemsPerRow={3}>
           {this.renderPhotoCards()}
         </Card.Group>
@@ -110,7 +124,16 @@ class Gallery extends React.Component {
           </Modal.Content>
         </Modal>
       </div>
+      }
+      </>
     )
+  }
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    loggedInUser: state,
+    soughtUser: ownProps.username
   }
 }
 
@@ -120,4 +143,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Gallery)
+export default connect(mapStateToProps, mapDispatchToProps)(Gallery)

@@ -31,7 +31,7 @@ class App extends React.Component {
             userId: data.user.id,
             username: data.user.username,
             photos: data.user.photos,
-            isPublic: data.user.is_public
+            userIsPublic: data.user.is_public
           }
         })
       })
