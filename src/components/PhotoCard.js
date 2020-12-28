@@ -12,14 +12,14 @@ function PhotoCard(props) {
   }
   
   return(
-    <Card>
+    <Card onClick={() => props.openModal(props.photo)}>
       {/* shows photo, timestamp, and comment count button. comment count button opens display modal in Gallery */}
       <Image src={props.photo.base64_src} />
       <Card.Meta>
         {props.photo.created_at}
       </Card.Meta>
       <Card.Content extra>
-      <Button onClick={() => props.openModal(props.photo)}>
+      <Button>
         <Icon name='comments outline' />
         {props.photo.comments.length}
       </Button>

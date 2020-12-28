@@ -1,26 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, Modal, Image } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
+
+import AlbumCard from '../components/AlbumCard'
 
 
 class Albums extends React.Component {
   
-  state = {
-    modalOpen: false,
-    modalAlbum: null,
-  }
-  
-  componentDidMount() {
-  }
-  
   renderAlbumCards = () => {
     const albumArray = this.props.userAlbums.sort((a, b) => b.id - a.id)
-    return albumArray.map(album =>
-      <div className="album">
-        <h3>{album.name}</h3>
-        <div>{album.photo_ids.map(photo_id => <p>Pic ID:{photo_id}</p>)}</div>
-      </div>
-    )   
+    return albumArray.map(album => {
+      return <AlbumCard key={album.id} album={album} />
+    })   
   }
   
   render() {
@@ -43,7 +34,6 @@ class Albums extends React.Component {
 const mapStateToProps = (state) => {
   return {
     username: state.username,
-    userPhotos: state.photos,
     userAlbums: state.albums
   }
 }
