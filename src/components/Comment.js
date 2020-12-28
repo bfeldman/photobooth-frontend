@@ -1,6 +1,6 @@
 /* renders a single comment */
 import React from 'react'
-import { Comment as SComment, Image } from 'semantic-ui-react'
+import { Comment as SComment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 
 

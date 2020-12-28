@@ -21,9 +21,11 @@ class Albums extends React.Component {
       <h1>Your Albums</h1>
       <AlbumCreator />
       <div className="album-cards">
-        <Card.Group itemsPerRow={3}>
-          {this.renderAlbumCards()}
-        </Card.Group>
+        {this.props.userAlbums.length > 0 ?
+          <Card.Group itemsPerRow={3}>
+            {this.renderAlbumCards()}
+          </Card.Group>
+        : <p>No albums yet!</p>}
       </div>
       </>
     )

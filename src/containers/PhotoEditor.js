@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { Stage, Layer, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
-import { Container, Button, Grid, Rail, Segment } from 'semantic-ui-react'
+import { Button, Grid, Rail, Segment } from 'semantic-ui-react'
 
 import Background from '../components/Background'
 import TintMenu from '../components/TintMenu'
