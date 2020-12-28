@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import pgarray from 'pg-array'
 import { Modal, Input, Button, Item, Checkbox } from 'semantic-ui-react'
 
 
@@ -36,8 +37,32 @@ class AlbumCreator extends React.Component {
     }
   }
   
-  savePhoto = () => {
-    
+  saveAlbum = () => {
+    const newAlbum = {
+      user_id: this.props.userId,
+      name: this.state.albumName,
+      photo_ids: pgarray(this.state.selectedPhotos)
+    }
+    const token = localStorage.getItem("token")
+    fetch(`http://localhost:3000/api/v1/albums/`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+          "Accepts": "application/json",
+          Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(newAlbum)
+    })
+    .then(response => response.json())
+    .then(data => {
+      this.props.dispatch({
+        type: 'ADD_ALBUM',
+        payload: {
+          album: data.album
+        }
+      })
+      this.setState({modalOpen: false})
+    })
   }
   
   render() {
@@ -80,6 +105,7 @@ class AlbumCreator extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    userId: state.userId,
     username: state.username,
     userPhotos: state.photos
   }

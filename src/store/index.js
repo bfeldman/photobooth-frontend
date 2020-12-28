@@ -48,6 +48,11 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         photos: newPhotos
       })
+      
+    case 'ADD_ALBUM':
+    return Object.assign({}, state, {
+      albums: [...state.albums, action.payload.album]
+    })
     
     /* updates username in redux state */
     case 'UPDATE_USERNAME':
