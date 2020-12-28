@@ -190,6 +190,7 @@ class PhotoEditor extends React.Component {
               ref={node => { this.stageRef = node}}
               width={640} 
               height={480}
+              style={{paddingLeft: "40px"}}
               onMouseDown={this.handleMouseDown}
               onMouseMove={this.handleMouseMove}
               onMouseUp={this.handleMouseUp}
