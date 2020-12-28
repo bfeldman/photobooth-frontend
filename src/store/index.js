@@ -1,11 +1,12 @@
 import { createStore } from 'redux'
-import { persistStore, persistReducer } from 'redux-persist' // imports from redux-persist
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 const initialState = {
   userId: null,
   username: "",
   photos: [],
+  albums: [],
   userIsPublic: true,
   loggedIn: false
 }
@@ -19,6 +20,7 @@ const reducer = (state = initialState, action) => {
         userId: action.payload.userId,
         username: action.payload.username,
         photos: action.payload.photos,
+        albums: action.payload.albums,
         userIsPublic: action.payload.userIsPublic,
         loggedIn: true
       })
@@ -29,7 +31,8 @@ const reducer = (state = initialState, action) => {
         userId: null,
         username: "",
         photos: [],
-        userIsPublic: null,
+        albums: [],
+        userIsPublic: true,
         loggedIn: false
       })
     
@@ -65,7 +68,6 @@ const reducer = (state = initialState, action) => {
 const persistConfig = {
   key: 'root',
   storage: storage
-  //whitelist: ['userId', 'username', 'userIsPublic', 'loggedIn']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer)

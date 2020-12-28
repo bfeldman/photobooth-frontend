@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Studio from './containers/Studio'
 import Gallery from './containers/Gallery'
 import Settings from './containers/Settings'
+import Albums from './containers/Albums'
 
 
 import Navbar from "./components/Navbar"
@@ -31,6 +32,7 @@ class App extends React.Component {
             userId: data.user.id,
             username: data.user.username,
             photos: data.user.photos,
+            albums: data.user.albums,
             userIsPublic: data.user.is_public
           }
         })
@@ -115,9 +117,9 @@ class App extends React.Component {
           <Switch>
             {/* <Route exact path="/" render={Home} /> */}
             
-            <Route exact path="/" >
-              <Redirect to="/gallery" />
-            </Route>
+            {/* <Route exact path="/" >
+              <Redirect to={`/gallery/${this.props.user}` />
+            </Route> */}
             
             <Route path="/signup" >
               <Signup submitHandler={this.signupHandler} />
@@ -129,10 +131,18 @@ class App extends React.Component {
             
             <Route path="/studio" component={Studio} />
             
-            <Route path="/gallery/:username" render={ 
-              ({match}) => <Gallery username={match.params.username} key={match.params.username} /> } />
+            <Route path="/albums" component={Albums} />
+            
+            <Route
+              path="/gallery/:username"
+              render={
+                ({match}) => <Gallery username={match.params.username} key={match.params.username} />
+              }
+            />
               
             <Route path="/settings" component={Settings} />
+            
+            
           </Switch>
         </main>
       </div>
