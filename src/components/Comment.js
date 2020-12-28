@@ -1,14 +1,19 @@
 /* renders a single comment */
-
 import React from 'react'
+import { Comment as SComment, Image } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+
 
 function Comment({ comment }) {
   return(
-    <div className="comment">
-      <h4>{comment.username}:</h4>
-      <p>{comment.content}</p>
-      <hr />
-    </div>
+    <SComment className="comment">
+      <SComment.Content>
+        <SComment.Author as={Link} to={`/gallery/${comment.username}`}>
+          {comment.username}
+        </SComment.Author>
+        <SComment.Text>{comment.content}</SComment.Text>
+      </SComment.Content>
+    </SComment>
   )
 }
 
