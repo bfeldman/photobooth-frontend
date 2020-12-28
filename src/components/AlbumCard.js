@@ -12,6 +12,16 @@ function AlbumCard(props) {
     setModalOpen(true)
   }
   
+  const renderPhotoGrid = () => {
+    const photoData = props.userPhotos.filter(photo => props.album.photo_ids.includes(photo.id))
+    return photoData.map(photo =>
+      <Card><Image
+        src={photo.base64_src}
+        key={photo.id}
+        size="medium"
+      /></Card>)
+  }
+  
   return(
     <Card onClick={openModal}>
       <Image src={coverPhoto.base64_src} />
@@ -23,8 +33,12 @@ function AlbumCard(props) {
         onClose={() => setModalOpen(false)}
         onOpen={() => setModalOpen(true)}
         open={modalOpen}
+        className="album-grid"
       >
-        RENDER PHOTOS HERE
+        <h2>{props.album.name}</h2>
+        <Card.Group itemsPerRow={3} divided={true}>
+          {renderPhotoGrid()}
+        </Card.Group>
       </Modal>
       
     </Card>

@@ -73,7 +73,7 @@ class Gallery extends React.Component {
     })
   }
   
-  /* filters makes fetch call and then updates state with filtered photo array */
+  /* filters, makes fetch call and then updates state with filtered photo array */
   deletePhoto = (photoId) => {
     const updatedPhotos = this.state.user.photos.filter(photo => photo.id !== photoId)
     const token = localStorage.getItem('token')
