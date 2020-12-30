@@ -1,9 +1,12 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import { Button, Grid, Rail, Segment } from 'semantic-ui-react'
+
 import { Stage, Layer, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
-import { Button, Grid, Rail, Segment } from 'semantic-ui-react'
+import { b64toFile } from 'b64-to-file'
+import { nanoid } from 'nanoid'
 
 import Background from '../components/Background'
 import TintMenu from '../components/TintMenu'
@@ -77,21 +80,16 @@ class PhotoEditor extends React.Component {
   
   /* saves new photo to backend */
   saveToGallery = () => {
-    const base64_img = this.stageRef.getStage().toDataURL()
-    const byteString = atob(base64_img.split(',')[1])
-    
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (var i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    const blob = new Blob([ab], { type: 'image/png', name: 'photo' })
-    console.log(blob)
+    const base64_src = this.stageRef.getStage().toDataURL()
+    const fileName = nanoid()
+    const convertedFile = b64toFile(base64_src, fileName)
+    console.log(convertedFile)
     
     const newPhoto = {
       user_id: this.props.userId,
       is_public: true,
-      base64_src: base64_img
+      /* base64_src: base64_src, */
+      image_file: convertedFile
     }
     const token = localStorage.getItem("token")
     fetch(`http://localhost:3000/api/v1/photos/`, {

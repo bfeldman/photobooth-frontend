@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, Redirect, withRouter} from 'react-router-dom'
+import { Route, Switch, withRouter} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Studio from './containers/Studio'
