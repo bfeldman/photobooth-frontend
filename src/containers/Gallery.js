@@ -14,8 +14,9 @@ class Gallery extends React.Component {
     modalPhoto: {
       comments: []
     },
+    pageIsPrivate: false,
     user: {
-      id: null,
+      userId: null,
       username: "",
       photos: []
     }
@@ -23,10 +24,16 @@ class Gallery extends React.Component {
   
   /* fetches photos based on username in path */
   componentDidMount() {
-    fetch(`http://localhost:3000/api/v1/users/${this.props.username}`)
+    fetch(`http://localhost:3000/api/v1/users/${this.props.soughtUser}`)
     .then(response => response.json())
-    .then(data => {
-      this.setState({user: data.user})
+    .then((data) => {
+      if (data.user.is_public) {
+        this.setState({user: data.user})
+      } else if (this.props.soughtUser === this.props.loggedInUser.username) {
+        this.setState({user: this.props.loggedInUser, pageIsPrivate: false})
+      } else {
+        this.setState({pageIsPrivate: true})
+      }  
     })
   }
   
@@ -66,7 +73,7 @@ class Gallery extends React.Component {
     })
   }
   
-  /* filters makes fetch call and then updates state with filtered photo array */
+  /* filters, makes fetch call and then updates state with filtered photo array */
   deletePhoto = (photoId) => {
     const updatedPhotos = this.state.user.photos.filter(photo => photo.id !== photoId)
     const token = localStorage.getItem('token')
@@ -90,8 +97,14 @@ class Gallery extends React.Component {
   
   render() {
     return(
+      <>
+      <h1>{`${this.props.soughtUser}'s Pics`}</h1>
+      {this.state.pageIsPrivate ?
+        <p>This user is private</p>
+      
+      :
+      
       <div className="gallery">
-        <h1>{`${this.props.username}'s Pics`}</h1>
         <Card.Group itemsPerRow={3}>
           {this.renderPhotoCards()}
         </Card.Group>
@@ -103,14 +116,23 @@ class Gallery extends React.Component {
           <Modal.Content image>
             <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
             
-            <Modal.Description>
+            <Modal.Description className="comment-section">
             { this.renderComments() }
             <CommentForm photoId={this.state.modalPhoto.id} displayNewComment={this.displayNewComment}/>
             </Modal.Description>
           </Modal.Content>
         </Modal>
       </div>
+      }
+      </>
     )
+  }
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    loggedInUser: state,
+    soughtUser: ownProps.username
   }
 }
 
@@ -120,4 +142,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Gallery)
+export default connect(mapStateToProps, mapDispatchToProps)(Gallery)

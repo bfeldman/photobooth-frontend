@@ -42,6 +42,16 @@ class Navbar extends React.Component {
                 >
                     🎨 Studio
                 </Menu.Item>
+                
+                <Menu.Item
+                    as={NavLink}
+                    exact to="/albums"
+                    name='albums'
+                    active={activeItem === 'albums'}
+                    onClick={this.handleItemClick}
+                >
+                    📒 Albums
+                </Menu.Item>
         
                 {/* renders different options based on login status */}
                 {this.props.loggedIn ?

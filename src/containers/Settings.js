@@ -1,13 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Form, Input } from 'semantic-ui-react'
+import { Form, Input, Checkbox } from 'semantic-ui-react'
 
 
 
 class Settings extends React.Component {
   
   state = {
-    username: ""
+    username: this.props.storeUsername
   }
   
   componentDidMount() {
@@ -37,19 +37,54 @@ class Settings extends React.Component {
     })
   }
   
+  togglePublic = () => {
+    const token = localStorage.getItem("token")
+    fetch(`http://localhost:3000/api/v1/users/${this.props.userId}`, {
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json",
+          "Accepts": "application/json",
+          Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify({is_public: !this.props.storeUserIsPublic})
+    })
+    .then(response => response.json())
+    .then(data => {
+      this.props.dispatch({
+        type: 'UPDATE_IS_PUBLIC',
+        payload: {
+          userIsPublic: data.user.is_public
+        }
+      })
+    })
+  }
+  
   /* renders form with current user details from Redux state */
   render() {
+    console.log("PROPS", this.props)
     return (
+      <>
       <Form onSubmit={this.updateUsername}>
-        <Input
-          label="change username"
-          placeholder={this.props.storeUsername}
-          value={this.state.username}
-          onChange={(e, {value}) => {
-            this.setState({username: value})
-          }}
-        />
+        <Form.Field>
+          <Input
+            label="change username"
+            placeholder={this.props.storeUsername}
+            value={this.state.username}
+            onChange={(e, {value}) => {
+              this.setState({username: value})
+            }}
+          />
+        </Form.Field>
+        <Form.Field>
+          <Checkbox
+            toggle
+            label={this.props.storeUserIsPublic ? "Profile visibility: PUBLIC" : "Profile visibility: PRIVATE"}
+            defaultChecked={this.props.storeUserIsPublic}
+            onClick={this.togglePublic}
+          />
+        </Form.Field>
       </Form>
+      </>
     )
   }
 }
@@ -57,7 +92,8 @@ class Settings extends React.Component {
 const mapStateToProps = state => {
   return {
     userId: state.userId,
-    storeUsername: state.username
+    storeUsername: state.username,
+    storeUserIsPublic: state.userIsPublic
   }
 }
 

@@ -1,9 +1,13 @@
 import { createStore } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 const initialState = {
   userId: null,
   username: "",
   photos: [],
+  albums: [],
+  userIsPublic: true,
   loggedIn: false
 }
 
@@ -16,6 +20,8 @@ const reducer = (state = initialState, action) => {
         userId: action.payload.userId,
         username: action.payload.username,
         photos: action.payload.photos,
+        albums: action.payload.albums,
+        userIsPublic: action.payload.userIsPublic,
         loggedIn: true
       })
     
@@ -25,6 +31,8 @@ const reducer = (state = initialState, action) => {
         userId: null,
         username: "",
         photos: [],
+        albums: [],
+        userIsPublic: true,
         loggedIn: false
       })
     
@@ -40,11 +48,21 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         photos: newPhotos
       })
+      
+    case 'ADD_ALBUM':
+    return Object.assign({}, state, {
+      albums: [...state.albums, action.payload.album]
+    })
     
     /* updates username in redux state */
     case 'UPDATE_USERNAME':
       return Object.assign({}, state, {
         username: action.payload.username
+      })
+      
+    case 'UPDATE_IS_PUBLIC':
+      return Object.assign({}, state, {
+        userIsPublic: action.payload.userIsPublic
       })
     
     default:
@@ -52,6 +70,15 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const persistConfig = {
+  key: 'root',
+  storage: storage
+}
 
-export default store
+const persistedReducer = persistReducer(persistConfig, reducer)
+
+const store = createStore(persistedReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
+const persistor = persistStore(store)
+
+export {store, persistor}
