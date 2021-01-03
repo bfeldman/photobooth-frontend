@@ -1,6 +1,6 @@
 import React from 'react'
 import Webcam from "react-webcam"
-import { Button, Modal, Image, Container, Icon, Header } from 'semantic-ui-react'
+import { Button, Modal, Image, Container, Header } from 'semantic-ui-react'
 
 class WebcamModal extends React.Component {
   
