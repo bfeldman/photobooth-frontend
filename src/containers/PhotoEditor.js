@@ -133,8 +133,9 @@ class PhotoEditor extends React.Component {
   
   /* undo function */
   undoBrushLine = () => {
-    const newLines = this.state.lines.pop()
-    this.setState({lines: newLines})
+    const linesArray = this.state.lines
+    linesArray.length = linesArray.length - 1
+    this.setState({lines: linesArray})
   }
   
   /* disables tool if the other is enabled, handles disabling of both */
