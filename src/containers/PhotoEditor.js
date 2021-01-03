@@ -5,8 +5,6 @@ import { Button, Grid, Rail, Segment } from 'semantic-ui-react'
 
 import { Stage, Layer, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
-import { b64toFile } from 'b64-to-file'
-import { nanoid } from 'nanoid'
 
 import Background from '../components/Background'
 import TintMenu from '../components/TintMenu'
@@ -82,16 +80,12 @@ class PhotoEditor extends React.Component {
   
   /* saves new photo to backend */
   saveToGallery = () => {
-    const base64_src = this.stageRef.getStage().toDataURL()
-    const fileName = nanoid()
-    const convertedFile = b64toFile(base64_src, fileName)
-    console.log(convertedFile)
+    const base64_src = this.stageRef.getStage().toDataURL().split(',')[1]
     
     const newPhoto = {
       user_id: this.props.userId,
       is_public: true,
-      /* base64_src: base64_src, */
-      image_file: convertedFile
+      base64_src: base64_src
     }
     const token = localStorage.getItem("token")
     fetch(`http://localhost:3000/api/v1/photos/`, {

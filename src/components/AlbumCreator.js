@@ -16,7 +16,7 @@ class AlbumCreator extends React.Component {
   renderPhotoOptions = () => {
     return this.props.userPhotos.map(photo =>
       <Grid.Column key={photo.id} style={{marginBottom: "5px"}}>
-        <Item.Image src={photo.base64_src} size="small" />
+        <Item.Image src={`${process.env.REACT_APP_BASE_URL}${photo.image_file}`} size="small" />
         <Checkbox
           style={{marginLeft: "5px"}}
           onClick={() => this.togglePhoto(photo.id)}

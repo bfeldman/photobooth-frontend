@@ -96,7 +96,7 @@ class App extends React.Component {
   }
   
   logoutHandler = () => {
-    localStorage.removeItem("token")
+    localStorage.clear()
     this.props.dispatch({
       type: 'LOGOUT_USER',
       payload: {

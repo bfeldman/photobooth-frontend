@@ -16,14 +16,14 @@ function AlbumCard(props) {
     const photoData = props.userPhotos.filter(photo => props.album.photo_ids.includes(photo.id))
     return photoData.map(photo =>
       <Card key={photo.id}><Image
-        src={photo.base64_src}
+        src={`${process.env.REACT_APP_BASE_URL}${photo.image_file}`}
         size="medium"
       /></Card>)
   }
   
   return(
     <Card onClick={openModal}>
-      <Image src={coverPhoto.base64_src} />
+      <Image src={`${process.env.REACT_APP_BASE_URL}${coverPhoto.image_file}`} />
       <Card.Content>
         <Card.Header content={props.album.name} />
       </Card.Content>

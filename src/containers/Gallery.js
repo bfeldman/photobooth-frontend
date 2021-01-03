@@ -114,7 +114,7 @@ class Gallery extends React.Component {
           open={this.state.modalOpen}
         >
           <Modal.Content image>
-            <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
+            <Image size='large' src={`${process.env.REACT_APP_BASE_URL}${this.state.modalPhoto.image_file}`} wrapped />
             
             <Modal.Description className="comment-section">
             
