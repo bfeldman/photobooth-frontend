@@ -9,6 +9,7 @@ function TextInput(props) {
       <Input
         placeholder="top text"
         onChange={(e, {value}) => props.setText("topText", value)}
+        style={{paddingBottom: "5px"}}
       /><br />
       <Input
         placeholder="bottom text"

@@ -13,6 +13,7 @@ import TintMenu from '../components/TintMenu'
 import StickerMenu from '../components/StickerMenu'
 import Sticker from '../components/Sticker'
 import TextInput from '../components/TextInput'
+import BrushColorMenu from '../components/BrushColorMenu'
 
 
 
@@ -22,7 +23,8 @@ class PhotoEditor extends React.Component {
     image: "",
     brush: {
       enabled: false,
-      isDrawing: false
+      isDrawing: false,
+      color: "red"
     },
     lines: [],
     tint: "",
@@ -47,7 +49,7 @@ class PhotoEditor extends React.Component {
       /* isDrawing enables movement capture */
       this.setState({brush: {...this.state.brush, isDrawing: true}})
       /* creates a new line being drawn with each mousedown */
-      this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y] }]})
+      this.setState({lines: [...this.state.lines, { points: [pos.x, pos.y], color: this.state.brush.color }]})
     }
     if (this.state.sticker.enabled && this.state.sticker.image !== "") {
       this.setState({plantedStickers: [...this.state.plantedStickers, { points: [pos.x, pos.y], image: this.state.sticker.image }]})
@@ -120,7 +122,7 @@ class PhotoEditor extends React.Component {
     this.setState({tint: tintColor})
   }
 
-  /* changes sticker selected for tint in state */
+  /* changes sticker selected in state */
   setSticker = (sticker) => {
     this.setState({sticker: {...this.state.sticker, image: sticker}})
   }
@@ -128,6 +130,17 @@ class PhotoEditor extends React.Component {
   /* handles changes to both top and bottom text inputs */
   setText = (position, text) => {
     this.setState({[position]: text})
+  }
+  
+  /* changes brush color selected in state */
+  setBrushColor = (brushColor) => {
+    this.setState({brush: {...this.state.brush, color: brushColor}})
+  }
+  
+  /* undo function */
+  undoBrushLine = () => {
+    const newLines = this.state.lines.pop()
+    this.setState({lines: newLines})
   }
   
   /* disables tool if the other is enabled, handles disabling of both */
@@ -151,7 +164,7 @@ class PhotoEditor extends React.Component {
       return <Line
         key={idx}
         points={line.points}
-        stroke="#df4b26"
+        stroke={line.color}
         strokeWidth={5}
         tension={0.5}
         lineCap="round"
@@ -178,18 +191,28 @@ class PhotoEditor extends React.Component {
                   <Button
                     onClick={() => this.toolToggle("sticker")}
                     color={this.state.sticker.enabled ? "green" : null}
+                    style={{marginTop: "5px"}}
                   >
                     STICKER TOOL: {this.state.sticker.enabled ? "ENABLED" : "DISABLED"}
                   </Button>
                 </Segment>
               
                 <Segment>
+                  <BrushColorMenu setBrushColor={this.setBrushColor} />
                   <Button
                     onClick={() => this.toolToggle("brush")}
                     color={this.state.brush.enabled ? "green" : null}
+                    style={{marginTop: "5px"}}
                   >
                     PAINTBRUSH: {this.state.brush.enabled ? "ENABLED" : "DISABLED"}
                   </Button>
+                  {/* undo button
+                  <Button
+                    onClick={this.undoBrushLine}
+                    label="Undo"
+                    icon="undo"
+                    style={{marginTop: "5px"}}
+                  /> */}
                 </Segment>
               </Rail>
       
@@ -198,7 +221,7 @@ class PhotoEditor extends React.Component {
               ref={node => { this.stageRef = node}}
               width={640} 
               height={480}
-              style={{paddingLeft: "40px"}}
+              style={{paddingLeft: "30px"}}
               onMouseDown={this.handleMouseDown}
               onMouseMove={this.handleMouseMove}
               onMouseUp={this.handleMouseUp}
@@ -260,14 +283,17 @@ class PhotoEditor extends React.Component {
           
           </Grid.Column>
         </Grid.Row>
+        
         {/* FILE ACTIONS */}
         <Grid.Row>
-          <Grid.Column >
+          <Grid.Column>
             <Button onClick={this.download}>DOWNLOAD</Button>
           </Grid.Column>
-          <Grid.Column>
-            <Button onClick={this.saveToGallery}>SAVE TO GALLERY</Button>
-          </Grid.Column>
+          {this.props.loggedIn ?
+            <Grid.Column>
+              <Button onClick={this.saveToGallery} color="green">SAVE TO GALLERY</Button>
+            </Grid.Column>
+          : null}
           <Grid.Column>
             <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
           </Grid.Column>
@@ -283,7 +309,8 @@ class PhotoEditor extends React.Component {
 const mapStateToProps = state => {
   return {
     userId: state.userId,
-    username: state.username
+    username: state.username,
+    loggedIn: state.loggedIn
   }
 }
 

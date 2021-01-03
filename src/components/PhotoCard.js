@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Card, Image, Icon, Button, Modal, Header } from 'semantic-ui-react'
 
+import { format } from 'timeago.js'
+
 
 function PhotoCard(props) {
   const [modalOpen, setModalOpen] = useState(false)
@@ -16,7 +18,7 @@ function PhotoCard(props) {
       {/* shows photo, timestamp, and comment count button. comment count button opens display modal in Gallery */}
       <Image src={props.photo.base64_src} />
       <Card.Meta>
-        {props.photo.created_at}
+        {format(props.photo.created_at, { relativeDate: Date.now()})}
       </Card.Meta>
       <Card.Content extra>
       <Button onClick={() => props.openModal(props.photo)}>

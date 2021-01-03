@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Form, Input, Checkbox } from 'semantic-ui-react'
+import { Form, Input, Checkbox, Segment, Grid } from 'semantic-ui-react'
 
 
 
@@ -61,30 +61,36 @@ class Settings extends React.Component {
   
   /* renders form with current user details from Redux state */
   render() {
-    console.log("PROPS", this.props)
     return (
-      <>
-      <Form onSubmit={this.updateUsername}>
-        <Form.Field>
-          <Input
-            label="change username"
-            placeholder={this.props.storeUsername}
-            value={this.state.username}
-            onChange={(e, {value}) => {
-              this.setState({username: value})
-            }}
-          />
-        </Form.Field>
-        <Form.Field>
-          <Checkbox
-            toggle
-            label={this.props.storeUserIsPublic ? "Profile visibility: PUBLIC" : "Profile visibility: PRIVATE"}
-            defaultChecked={this.props.storeUserIsPublic}
-            onClick={this.togglePublic}
-          />
-        </Form.Field>
-      </Form>
-      </>
+      <Segment.Group>
+        <Segment>
+          <Grid>
+            <Grid.Column textAlign="center">
+            <Form onSubmit={this.updateUsername}>
+              <Form.Field>
+                <Input
+                  label="change username"
+                  placeholder={this.props.storeUsername}
+                  value={this.state.username}
+                  onChange={(e, {value}) => {
+                    this.setState({username: value})
+                  }}
+                />
+              </Form.Field>
+            </Form>
+            </Grid.Column>
+          </Grid>
+        </Segment>
+        <Segment>
+              <Checkbox
+                toggle
+                label={this.props.storeUserIsPublic ? "Profile visibility: PUBLIC" : "Profile visibility: PRIVATE"}
+                defaultChecked={this.props.storeUserIsPublic}
+                onClick={this.togglePublic}
+              />
+        </Segment>
+      </Segment.Group>
+      
     )
   }
 }

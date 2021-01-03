@@ -1,6 +1,6 @@
 import React from 'react'
 import Webcam from "react-webcam"
-import { Button, Modal, Image, Container } from 'semantic-ui-react'
+import { Button, Modal, Image, Container, Header } from 'semantic-ui-react'
 
 class WebcamModal extends React.Component {
   
@@ -9,7 +9,13 @@ class WebcamModal extends React.Component {
     webcamPreview: true,
     showCapture: false,
     webcamMirrored: true,
+    countdown: 5,
+    interval: null,
     open: true
+  }
+  
+  componentWillUnmount() {
+     clearInterval(this.state.interval);
   }
   
   setRef = (webcam) => {
@@ -18,12 +24,25 @@ class WebcamModal extends React.Component {
   
   /* captures current webcam feed and sets to state */
   capture = () => {
-    const photo = this.webcam.getScreenshot();
-    this.setState({
-      webcamPhoto: photo,
-      webcamPreview: false,
-      showCapture: true
-    })
+    const newCount = this.state.countdown - 1
+      if(newCount >= 0) { 
+        this.setState({ countdown: newCount });
+      } else {
+        clearInterval(this.state.interval)
+        const photo = this.webcam.getScreenshot()
+        this.setState({
+          webcamPhoto: photo,
+          webcamPreview: false,
+          showCapture: true,
+          countdown: 5,
+          interval: null
+        })
+     }
+  }
+  
+  timer = () => {
+    const interval = setInterval(this.capture, 1000)
+    this.setState({interval: interval})
   }
   
   /* resets state to wipe photo and show webcam feed */
@@ -32,6 +51,7 @@ class WebcamModal extends React.Component {
       webcamPhoto: "",
       webcamPreview: true,
       showCapture: false,
+      countdown: 5
     })
   }
   
@@ -59,6 +79,13 @@ class WebcamModal extends React.Component {
             <div className="live-preview">
               <Modal.Content>
                 <Container textAlign="center">
+                    {/* countdown mode */}
+                    {this.state.interval ?
+                      <Header inverted textAlign="center" as="h3">
+                        <Header.Content>Taking picture in: {this.state.countdown}</Header.Content>
+                      </Header>
+                    : <Header inverted textAlign="center" as="h3" content="Say cheese!" /> }
+                    
                     <div><Webcam
                       ref={this.setRef}
                       mirrored={this.state.webcamMirrored}
@@ -66,9 +93,10 @@ class WebcamModal extends React.Component {
                       screenshotQuality={1}
                       width={640}
                       forceScreenshotSourceSize={true}
+                      style={{marginBottom: "15px"}}
                     /></div>
                     {/* shutter button */}
-                    <Button circular={true} color="red" size="large" onClick={this.capture}>take pic</Button>
+                    <Button circular={true} color="red" size="large" onClick={this.timer}>take pic</Button>
                     {/* toggle mirrored camera */}
                     <Button circular={true} size="large" onClick={() => this.setState({webcamMirrored: !this.state.webcamMirrored})}>
                       Mirror: {this.state.webcamMirrored ? "ON" : "OFF" }
@@ -83,7 +111,7 @@ class WebcamModal extends React.Component {
             <div className="capture-preview">
               <Modal.Content>
                 <Container textAlign="center">
-                  <Image centered={true} src={this.state.webcamPhoto} alt="preview" />
+                  <Image centered={true} src={this.state.webcamPhoto} alt="preview" style={{marginBottom: "15px"}} />
                   <Button circular={true} color="red" size="large" onClick={this.retake}>retake</Button>
                   <Button circular={true} color="green" size="large" onClick={this.sendToEditor}>edit pic</Button>
               </Container>
