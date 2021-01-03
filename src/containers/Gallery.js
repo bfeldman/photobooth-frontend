@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, Modal, Image } from 'semantic-ui-react'
+import { Card, Modal, Image, Comment } from 'semantic-ui-react'
 
 import PhotoCard from '../components/PhotoCard'
-import Comment from '../components/Comment'
+import UserComment from '../components/UserComment'
 import CommentForm from '../components/CommentForm'
 
 
@@ -60,7 +60,7 @@ class Gallery extends React.Component {
   
   /* renders comments for whatever photo is displayed in the modal */
   renderComments = () => {
-    return this.state.modalPhoto.comments.map(comment => <Comment key={comment.id} comment={comment} />)
+    return this.state.modalPhoto.comments.map(comment => <UserComment key={comment.id} comment={comment} />)
   }
   
   /* adds new comment to to state so it can render and update comment count without reload */
@@ -117,7 +117,11 @@ class Gallery extends React.Component {
             <Image size='large' src={this.state.modalPhoto.base64_src} wrapped />
             
             <Modal.Description className="comment-section">
-            { this.renderComments() }
+            
+            <Comment.Group>
+              { this.renderComments() }
+            </Comment.Group>
+            
             <CommentForm photoId={this.state.modalPhoto.id} displayNewComment={this.displayNewComment}/>
             </Modal.Description>
           </Modal.Content>

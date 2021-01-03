@@ -25,7 +25,7 @@ function AlbumCard(props) {
     <Card onClick={openModal}>
       <Image src={coverPhoto.base64_src} />
       <Card.Content>
-        {props.album.name}
+        <Card.Header content={props.album.name} />
       </Card.Content>
       
       <Modal

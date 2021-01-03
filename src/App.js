@@ -117,8 +117,8 @@ class App extends React.Component {
           <Switch>
             {/* <Route exact path="/" render={Home} /> */}
             
-            {/* <Route exact path="/" >
-              <Redirect to={`/gallery/${this.props.user}` />
+            {/* <Route exact path="/gallery" >
+              <Redirect to={Home} />
             </Route> */}
             
             <Route path="/signup" >
