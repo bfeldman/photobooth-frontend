@@ -129,6 +129,12 @@ class PhotoEditor extends React.Component {
     this.setState({brush: {...this.state.brush, color: brushColor}})
   }
   
+  /* undo function */
+  undoBrushLine = () => {
+    const newLines = this.state.lines.pop()
+    this.setState({lines: newLines})
+  }
+  
   /* disables tool if the other is enabled, handles disabling of both */
   toolToggle = (tool) => {
     if (tool === "sticker") {
@@ -192,6 +198,13 @@ class PhotoEditor extends React.Component {
                   >
                     PAINTBRUSH: {this.state.brush.enabled ? "ENABLED" : "DISABLED"}
                   </Button>
+                  {/* undo button
+                  <Button
+                    onClick={this.undoBrushLine}
+                    label="Undo"
+                    icon="undo"
+                    style={{marginTop: "5px"}}
+                  /> */}
                 </Segment>
               </Rail>
       
@@ -262,6 +275,7 @@ class PhotoEditor extends React.Component {
           
           </Grid.Column>
         </Grid.Row>
+        
         {/* FILE ACTIONS */}
         <Grid.Row>
           <Grid.Column>
