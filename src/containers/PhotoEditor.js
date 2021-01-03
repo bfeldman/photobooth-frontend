@@ -200,13 +200,13 @@ class PhotoEditor extends React.Component {
                   >
                     PAINTBRUSH: {this.state.brush.enabled ? "ENABLED" : "DISABLED"}
                   </Button>
-                  {/* undo button
+                  {/* undo button */}
                   <Button
                     onClick={this.undoBrushLine}
                     label="Undo"
                     icon="undo"
                     style={{marginTop: "5px"}}
-                  /> */}
+                  />
                 </Segment>
               </Rail>
       

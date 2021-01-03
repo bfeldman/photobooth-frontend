@@ -26,6 +26,7 @@ class App extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
+        console.log(data.user)
         this.props.dispatch({
           type: 'SET_USER',
           payload: {
@@ -59,7 +60,9 @@ class App extends React.Component {
         payload: {
           userId: data.user.id,
           username: data.user.username,
-          photos: data.user.photos
+          photos: data.user.photos,
+          albums: data.user.albums,
+          userIsPublic: data.user.is_public
         }
       })
       this.props.history.push("/gallery/" + data.user.username)
@@ -87,7 +90,9 @@ class App extends React.Component {
           payload: {
             userId: data.user.id,
             username: data.user.username,
-            photos: data.user.photos
+            photos: data.user.photos,
+            albums: data.user.albums,
+            userIsPublic: data.user.is_public
           }
         })
         this.props.history.push("/gallery/" + data.user.username)

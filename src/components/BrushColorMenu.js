@@ -17,6 +17,7 @@ const BrushColorMenu = (props) => (
     placeholder="Select brush color..."
     options={options}
     selection
+    defaultValue="red"
     /* changes PhotoEditor tint state to whatever's selected */
     onChange={(e, {value}) => props.setBrushColor(value)}
   />
