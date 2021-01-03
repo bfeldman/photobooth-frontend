@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import pgarray from 'pg-array'
-import { Modal, Input, Button, Item, Checkbox } from 'semantic-ui-react'
+import { Modal, Input, Button, Item, Checkbox, Grid, Segment } from 'semantic-ui-react'
 
 
 class AlbumCreator extends React.Component {
@@ -15,12 +15,13 @@ class AlbumCreator extends React.Component {
   
   renderPhotoOptions = () => {
     return this.props.userPhotos.map(photo =>
-      <Item key={photo.id}>
+      <Grid.Column key={photo.id} style={{marginBottom: "5px"}}>
         <Item.Image src={photo.base64_src} size="small" />
         <Checkbox
+          style={{marginLeft: "5px"}}
           onClick={() => this.togglePhoto(photo.id)}
         />
-      </Item>
+      </Grid.Column>
     )
   }
   
@@ -68,10 +69,11 @@ class AlbumCreator extends React.Component {
   render() {
     return(
       <Modal
+        size="small"
         onClose={() => this.setState({modalOpen: false})}
         onOpen={() => this.setState({modalOpen: true})}
         open={this.state.modalOpen}
-        trigger={<Button color="blue">Create New Album</Button>}
+        trigger={<Button color="blue" style={{marginBottom: "15px"}}>Create New Album</Button>}
       >
         
         <Modal.Content>
@@ -84,7 +86,7 @@ class AlbumCreator extends React.Component {
           />
           
           <Button
-            disabled={this.state.selectedPhotos.length === 0}
+            disabled={this.state.selectedPhotos.length === 0 || this.state.albumName.length === 0}
             color={this.state.selectedPhotos.length > 0 ? "blue" : "grey"}
             floated='right'
             onClick={this.saveAlbum}
@@ -92,9 +94,13 @@ class AlbumCreator extends React.Component {
             Save Album
           </Button>
           
-          <Item.Group divided>
-            {this.renderPhotoOptions()}
-          </Item.Group>
+          <Segment>
+            <Grid columns={3} >
+              <Grid.Row>
+                {this.renderPhotoOptions()}
+              </Grid.Row>
+            </Grid>
+          </Segment>
         
         </Modal.Content>
       

@@ -47,7 +47,6 @@ class WebcamModal extends React.Component {
   
   /* resets state to wipe photo and show webcam feed */
   retake = () => {
-    clearInterval(this.state.interval)
     this.setState({
       webcamPhoto: "",
       webcamPreview: true,
@@ -94,6 +93,7 @@ class WebcamModal extends React.Component {
                       screenshotQuality={1}
                       width={640}
                       forceScreenshotSourceSize={true}
+                      style={{marginBottom: "15px"}}
                     /></div>
                     {/* shutter button */}
                     <Button circular={true} color="red" size="large" onClick={this.timer}>take pic</Button>
@@ -111,7 +111,7 @@ class WebcamModal extends React.Component {
             <div className="capture-preview">
               <Modal.Content>
                 <Container textAlign="center">
-                  <Image centered={true} src={this.state.webcamPhoto} alt="preview" />
+                  <Image centered={true} src={this.state.webcamPhoto} alt="preview" style={{marginBottom: "15px"}} />
                   <Button circular={true} color="red" size="large" onClick={this.retake}>retake</Button>
                   <Button circular={true} color="green" size="large" onClick={this.sendToEditor}>edit pic</Button>
               </Container>
