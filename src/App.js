@@ -53,18 +53,20 @@ class App extends React.Component {
     })
     .then(response => response.json())
     .then(data => {
-      localStorage.setItem('token', data.jwt)
-      this.props.dispatch({
-        type: 'SET_USER',
-        payload: {
-          userId: data.user.id,
-          username: data.user.username,
-          photos: data.user.photos,
-          albums: data.user.albums,
-          userIsPublic: data.user.is_public
-        }
-      })
-      this.props.history.push("/gallery/" + data.user.username)
+      if (!data.error) {
+        localStorage.setItem('token', data.jwt)
+        this.props.dispatch({
+          type: 'SET_USER',
+          payload: {
+            userId: data.user.id,
+            username: data.user.username,
+            photos: data.user.photos,
+            albums: data.user.albums,
+            userIsPublic: data.user.is_public
+          }
+        })
+        this.props.history.push("/gallery/" + data.user.username)
+      }
     })
   }
   
@@ -83,18 +85,20 @@ class App extends React.Component {
       })
       .then(response => response.json())
       .then(data => {
-        localStorage.setItem("token", data.jwt)
-        this.props.dispatch({
-          type: 'SET_USER',
-          payload: {
-            userId: data.user.id,
-            username: data.user.username,
-            photos: data.user.photos,
-            albums: data.user.albums,
-            userIsPublic: data.user.is_public
-          }
-        })
-        this.props.history.push("/gallery/" + data.user.username)
+        if (!data.error) {
+          localStorage.setItem("token", data.jwt)
+          this.props.dispatch({
+            type: 'SET_USER',
+            payload: {
+              userId: data.user.id,
+              username: data.user.username,
+              photos: data.user.photos,
+              albums: data.user.albums,
+              userIsPublic: data.user.is_public
+            }
+          })
+          this.props.history.push("/gallery/" + data.user.username)
+        }
       })
     }
   }
@@ -122,7 +126,7 @@ class App extends React.Component {
             <Route exact path="/" render={Home} />
             
             <Route exact path="/gallery" >
-              <Redirect to={Home} />
+              <Redirect to="/" />
             </Route>
             
             <Route path="/signup" >

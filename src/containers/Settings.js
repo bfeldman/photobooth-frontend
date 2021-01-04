@@ -61,7 +61,6 @@ class Settings extends React.Component {
   
   /* renders form with current user details from Redux state */
   render() {
-    console.log(this.props)
     return (
       <Segment.Group>
         <Segment>
