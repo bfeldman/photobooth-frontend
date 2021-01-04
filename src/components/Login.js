@@ -1,49 +1,101 @@
 import React from 'react'
-import { Form, Button } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+
+import { Form, Button, Message } from 'semantic-ui-react'
 
 class Login extends React.Component {
-    state = {
-        username: "",
-        password: ""
+  state = {
+    user: {
+      username: "",
+      password: ""
+    },
+    errorMessage: false
+  }
+  
+  componentDidMount() {
+    if (localStorage.getItem("token")) {
+      this.props.history.push("/")
     }
+  }
+  
+  changeHandler = (event) => {
+    this.setState({ user: {
+      ...this.state.user,
+      [event.target.name]: event.target.value}
+    })
+  }
     
-    changeHandler = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
-    }
-    
-    /* sends state object up to submit handler in App.js for processing*/
-    submitHandler = (event) => {
-        event.preventDefault()
-        this.props.submitHandler(this.state)
-    }
-    
-    render() {
-        return(
-            <div className="login-form">
-                <h1>Log In</h1>
-                <Form>
-                    <Form.Input
-                        label='username'
-                        name='username'
-                        placeholder='username'
-                        value={this.state.username}
-                        onChange={this.changeHandler}
-                    />
-                    <Form.Input
-                        type='password'
-                        label='password'
-                        name="password"
-                        placeholder="password" 
-                        value={this.state.password} 
-                        onChange={this.changeHandler}
-                    />
-                    <Button onClick={this.submitHandler}>Log In</Button>
-                </Form>
-                
-
-            </div>
-        )
-    }
+  /* sends credentials, gets JWT and sets Redux store, then redirects */
+  submitHandler = (event) => {
+    event.preventDefault()
+    fetch('http://localhost:3000/api/v1/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accepts': 'application/json'
+      },
+      body: JSON.stringify({ user: this.state.user })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (!data.error) {
+        localStorage.setItem('token', data.jwt)
+        this.props.dispatch({
+          type: 'SET_USER',
+          payload: {
+            userId: data.user.id,
+            username: data.user.username,
+            photos: data.user.photos,
+            albums: data.user.albums,
+            userIsPublic: data.user.is_public
+          }
+        })
+        this.props.history.push("/gallery/" + data.user.username)
+      } else {
+        this.setState({errorMessage: true})
+      }
+    })
+  }
+  
+  render() {
+    return(
+      <div className="login-form" style={{width:"600px"}}>
+        <h1>Log In</h1>
+        
+        {this.state.errorMessage ?
+        <Message negative>
+          <Message.Header>Whoops!</Message.Header>
+          <p>We had an issue logging you in. Check your username and password for errors!</p>
+        </Message>
+        : null }
+        
+        <Form>
+          <Form.Input
+            label='username'
+            name='username'
+            placeholder='username'
+            value={this.state.username}
+            onChange={this.changeHandler}
+          />
+          <Form.Input
+            type='password'
+            label='password'
+            name="password"
+            placeholder="password" 
+            value={this.state.password} 
+            onChange={this.changeHandler}
+          />
+          <Button onClick={this.submitHandler}>Log In</Button>
+        </Form>
+      </div>
+    )
+  }
 }
 
-export default Login
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Login)

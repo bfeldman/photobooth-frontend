@@ -70,39 +70,6 @@ class App extends React.Component {
     })
   }
   
-  loginHandler = (userObj) => {
-    const token = localStorage.getItem("token")
-    if (token) {
-      this.props.history.push("/gallery")
-    } else {
-      fetch('http://localhost:3000/api/v1/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "Accepts": 'application/json'
-        },
-        body: JSON.stringify({ user: userObj})
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (!data.error) {
-          localStorage.setItem("token", data.jwt)
-          this.props.dispatch({
-            type: 'SET_USER',
-            payload: {
-              userId: data.user.id,
-              username: data.user.username,
-              photos: data.user.photos,
-              albums: data.user.albums,
-              userIsPublic: data.user.is_public
-            }
-          })
-          this.props.history.push("/gallery/" + data.user.username)
-        }
-      })
-    }
-  }
-  
   logoutHandler = () => {
     localStorage.clear()
     this.props.dispatch({
@@ -133,9 +100,7 @@ class App extends React.Component {
               <Signup submitHandler={this.signupHandler} />
             </Route>
             
-            <Route path="/login" >
-              <Login submitHandler={this.loginHandler} />
-            </Route>
+            <Route path="/login" component={Login} />
             
             <Route path="/studio" component={Studio} />
             
