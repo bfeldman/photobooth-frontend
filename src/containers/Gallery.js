@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, Modal, Image, Comment } from 'semantic-ui-react'
+import { Card, Modal, Image, Comment, Message } from 'semantic-ui-react'
 
 import PhotoCard from '../components/PhotoCard'
 import UserComment from '../components/UserComment'
@@ -19,7 +19,8 @@ class Gallery extends React.Component {
       userId: null,
       username: "",
       photos: []
-    }
+    },
+    errorMessage: false
   }
   
   /* fetches photos based on username in path */
@@ -27,13 +28,19 @@ class Gallery extends React.Component {
     fetch(`http://localhost:3000/api/v1/users/${this.props.soughtUser}`)
     .then(response => response.json())
     .then((data) => {
-      if (data.user.is_public) {
-        this.setState({user: data.user})
-      } else if (this.props.soughtUser === this.props.loggedInUser.username) {
-        this.setState({user: this.props.loggedInUser, pageIsPrivate: false})
+      console.log(data)
+        
+      if (!data.error) {  
+        if (data.user.is_public) {
+          this.setState({user: data.user})
+        } else if (this.props.soughtUser === this.props.loggedInUser.username) {
+          this.setState({user: this.props.loggedInUser, pageIsPrivate: false})
+        } else {
+          this.setState({pageIsPrivate: true})
+        }
       } else {
-        this.setState({pageIsPrivate: true})
-      }  
+        this.setState({errorMessage: true})
+      }
     })
   }
   
@@ -99,6 +106,14 @@ class Gallery extends React.Component {
     return(
       <>
       <h1>{`${this.props.soughtUser}'s Pics`}</h1>
+      
+      {this.state.errorMessage ?
+        <Message negative style={{width:"400px", margin:"0 auto"}}>
+          <Message.Header>Whoops!</Message.Header>
+          <p>We couldn't find this user!</p>
+        </Message>
+        : null }
+      
       {this.state.pageIsPrivate ?
         <p>This user is private</p>
       
