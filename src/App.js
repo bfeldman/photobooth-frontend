@@ -37,37 +37,9 @@ class App extends React.Component {
           }
         })
       })
-    } else {
-      this.props.history.push("/")
+    } else if (this.props.location.pathname !== "/" && this.props.location.pathname !== "/studio") {
+      this.props.history.push("/login")
     }
-  }
-  
-  signupHandler = (userObj) => {
-    fetch('http://localhost:3000/api/v1/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accepts': 'application/json'
-      },
-      body: JSON.stringify({ user: userObj })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (!data.error) {
-        localStorage.setItem('token', data.jwt)
-        this.props.dispatch({
-          type: 'SET_USER',
-          payload: {
-            userId: data.user.id,
-            username: data.user.username,
-            photos: data.user.photos,
-            albums: data.user.albums,
-            userIsPublic: data.user.is_public
-          }
-        })
-        this.props.history.push("/gallery/" + data.user.username)
-      }
-    })
   }
   
   logoutHandler = () => {
@@ -96,9 +68,7 @@ class App extends React.Component {
               <Redirect to="/" />
             </Route>
             
-            <Route path="/signup" >
-              <Signup submitHandler={this.signupHandler} />
-            </Route>
+            <Route path="/signup" component={Signup} />
             
             <Route path="/login" component={Login} />
             

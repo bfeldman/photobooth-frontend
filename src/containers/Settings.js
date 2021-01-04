@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Form, Input, Checkbox, Segment, Grid } from 'semantic-ui-react'
+import { Form, Input, Checkbox, Segment } from 'semantic-ui-react'
 
 
 
@@ -62,10 +62,8 @@ class Settings extends React.Component {
   /* renders form with current user details from Redux state */
   render() {
     return (
-      <Segment.Group>
+      <Segment.Group style={{width:"600px", margin:"0 auto"}}>
         <Segment>
-          <Grid>
-            <Grid.Column textAlign="center">
             <Form onSubmit={this.updateUsername}>
               <Form.Field>
                 <Input
@@ -78,8 +76,6 @@ class Settings extends React.Component {
                 />
               </Form.Field>
             </Form>
-            </Grid.Column>
-          </Grid>
         </Segment>
         <Segment>
               <Checkbox

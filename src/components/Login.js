@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
 import { Form, Button, Message } from 'semantic-ui-react'
 
 class Login extends React.Component {
@@ -59,7 +58,7 @@ class Login extends React.Component {
   
   render() {
     return(
-      <div className="login-form" style={{width:"600px"}}>
+      <div className="login-form" style={{width:"600px", margin:"0 auto"}}>
         <h1>Log In</h1>
         
         {this.state.errorMessage ?
