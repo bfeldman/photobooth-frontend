@@ -1,12 +1,12 @@
 import React from 'react'
-import { Route, Switch, withRouter} from 'react-router-dom'
+import { Route, Switch, withRouter, Redirect} from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import Studio from './containers/Studio'
 import Gallery from './containers/Gallery'
 import Settings from './containers/Settings'
 import Albums from './containers/Albums'
-
+import Home from './containers/Home'
 
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
@@ -38,7 +38,7 @@ class App extends React.Component {
         })
       })
     } else {
-      this.props.history.push("/login")
+      this.props.history.push("/")
     }
   }
   
@@ -119,11 +119,11 @@ class App extends React.Component {
         <Navbar logoutHandler={this.logoutHandler}/>
         <main>
           <Switch>
-            {/* <Route exact path="/" render={Home} /> */}
+            <Route exact path="/" render={Home} />
             
-            {/* <Route exact path="/gallery" >
+            <Route exact path="/gallery" >
               <Redirect to={Home} />
-            </Route> */}
+            </Route>
             
             <Route path="/signup" >
               <Signup submitHandler={this.signupHandler} />

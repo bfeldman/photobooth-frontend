@@ -22,7 +22,7 @@ function AlbumCard(props) {
   }
   
   return(
-    <Card onClick={openModal}>
+    <Card onClick={openModal} color="blue">
       <Image src={`${process.env.REACT_APP_BASE_URL}${coverPhoto.image_file}`} />
       <Card.Content>
         <Card.Header content={props.album.name} />

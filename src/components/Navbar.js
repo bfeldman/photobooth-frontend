@@ -11,7 +11,7 @@ class Navbar extends React.Component {
         
     render() {
         return(
-            <Menu icon='labeled'>
+            <Menu icon='labeled' inverted>
                 <Menu.Item header>
                     <Image size="mini" src={Catherine} />
                     BOTO PHOOTH

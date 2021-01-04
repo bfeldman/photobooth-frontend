@@ -14,7 +14,7 @@ function PhotoCard(props) {
   }
   
   return(
-    <Card>
+    <Card color="blue">
       {/* shows photo, timestamp, and comment count button. comment count button opens display modal in Gallery */}
       <Image src={`${process.env.REACT_APP_BASE_URL}${props.photo.image_file}`} />
       <Card.Meta>

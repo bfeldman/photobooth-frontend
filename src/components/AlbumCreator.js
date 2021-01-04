@@ -87,7 +87,7 @@ class AlbumCreator extends React.Component {
           
           <Button
             disabled={this.state.selectedPhotos.length === 0 || this.state.albumName.length === 0}
-            color={this.state.selectedPhotos.length > 0 ? "blue" : "grey"}
+            color={this.state.selectedPhotos.length > 0 && this.state.albumName.length > 0 ? "blue" : "grey"}
             floated='right'
             onClick={this.saveAlbum}
           >

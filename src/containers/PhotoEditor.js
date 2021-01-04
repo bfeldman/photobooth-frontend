@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { Button, Grid, Rail, Segment } from 'semantic-ui-react'
+import { Button, Grid, Rail, Segment, Icon } from 'semantic-ui-react'
 
 import { Stage, Layer, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
@@ -178,45 +178,52 @@ class PhotoEditor extends React.Component {
             
             {/* TOOLBAR */}
               <Rail internal position='right'>
-                <Segment><TintMenu setTint={this.setTint} /></Segment>
-                <Segment><TextInput setText={this.setText} /></Segment>
+                <Segment.Group raised>
+                  <Segment color='red'>
+                    <TintMenu setTint={this.setTint} />
+                  </Segment>
+                  
+                  <Segment color='blue'>
+                    <TextInput setText={this.setText} />
+                  </Segment>
+                  
+                  <Segment color='orange'>
+                    <StickerMenu setSticker={this.setSticker} /><br />
+                    <Button
+                      onClick={() => this.toolToggle("sticker")}
+                      color={this.state.sticker.enabled ? "green" : null}
+                      style={{marginTop: "5px"}}
+                    >
+                      STICKER TOOL: {this.state.sticker.enabled ? "ENABLED" : "DISABLED"}
+                    </Button>
+                  </Segment>
                 
-                <Segment>
-                  <StickerMenu setSticker={this.setSticker} /><br />
-                  <Button
-                    onClick={() => this.toolToggle("sticker")}
-                    color={this.state.sticker.enabled ? "green" : null}
-                    style={{marginTop: "5px"}}
-                  >
-                    STICKER TOOL: {this.state.sticker.enabled ? "ENABLED" : "DISABLED"}
-                  </Button>
-                </Segment>
-              
-                <Segment>
-                  <BrushColorMenu setBrushColor={this.setBrushColor} />
-                  <Button
-                    onClick={() => this.toolToggle("brush")}
-                    color={this.state.brush.enabled ? "green" : null}
-                    style={{marginTop: "5px"}}
-                  >
-                    PAINTBRUSH: {this.state.brush.enabled ? "ENABLED" : "DISABLED"}
-                  </Button>
-                  {/* undo button */}
-                  <Button
-                    onClick={this.undoBrushLine}
-                    label="Undo"
-                    icon="undo"
-                    style={{marginTop: "5px"}}
-                  />
-                </Segment>
+                  <Segment color='green'>
+                    <BrushColorMenu setBrushColor={this.setBrushColor} />
+                    <Button
+                      onClick={() => this.toolToggle("brush")}
+                      color={this.state.brush.enabled ? "green" : null}
+                      style={{marginTop: "5px"}}
+                    >
+                      PAINTBRUSH: {this.state.brush.enabled ? "ENABLED" : "DISABLED"}
+                    </Button>
+                    {/* undo button */}
+                    <Button
+                      onClick={this.undoBrushLine}
+                      label="Undo"
+                      icon="undo"
+                      style={{marginTop: "5px"}}
+                    />
+                  </Segment>
+                </Segment.Group>
               </Rail>
       
       {/* CANVAS AREA */}
+          <Segment style={{width:"670px", marginLeft: "30px"}} raised>
             <Stage
               ref={node => { this.stageRef = node}}
               width={640} 
               height={480}
-              style={{paddingLeft: "30px"}}
               onMouseDown={this.handleMouseDown}
               onMouseMove={this.handleMouseMove}
               onMouseUp={this.handleMouseUp}
@@ -275,22 +282,31 @@ class PhotoEditor extends React.Component {
               </Layer>
               
             </Stage>
-          
+          </Segment>
           </Grid.Column>
         </Grid.Row>
         
         {/* FILE ACTIONS */}
         <Grid.Row>
           <Grid.Column>
-            <Button onClick={this.download}>DOWNLOAD</Button>
+            <Button onClick={this.download} icon labelPosition="left">
+              <Icon name='download' />
+              DOWNLOAD
+            </Button>
           </Grid.Column>
           {this.props.loggedIn ?
             <Grid.Column>
-              <Button onClick={this.saveToGallery} color="green">SAVE TO GALLERY</Button>
+              <Button onClick={this.saveToGallery} color="green" icon labelPosition="left">
+                <Icon name='save' />
+                SAVE TO GALLERY
+              </Button>
             </Grid.Column>
           : null}
           <Grid.Column>
-            <Button onClick={this.props.retakePhoto}>RETAKE PICTURE</Button>
+            <Button onClick={this.props.retakePhoto} icon labelPosition="left">
+              <Icon name='camera' />
+              RETAKE PICTURE
+            </Button>
           </Grid.Column>
         </Grid.Row>
         {this.state.redirect ? <Redirect to={`/gallery/${this.props.username}`} /> : null }
