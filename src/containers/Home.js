@@ -24,17 +24,17 @@ function Home() {
           <Divider />
           
           <Segment size="huge" color="red" inverted style={{width:"500px", margin:"0 auto"}}>
-            <Image src={bpcam} size="medium" style={{margin:"0 auto"}}/>
-            <p>Head over to the studio to take a picture.</p>
+            <Image src={bpgrid} size="medium" style={{margin:"0 auto"}}/>
+            <p>Use the image editor to make your pic look really cool, then share it with your friends.</p>
           </Segment>
           
           <Divider />
           
           <Segment size="huge" color="blue" inverted style={{width:"500px", margin:"0 auto"}}>
-            <Image src={bpgrid} size="medium" style={{margin:"0 auto"}}/>
-            <p>Use the image editor to make your pic look really cool, then share it with your friends.</p>
+            <Image src={bpcam} size="medium" style={{margin:"0 auto"}}/>
+            <p>Head over to the studio to take a picture.</p>
           </Segment>
-            
+
     </div>
   )
 }
