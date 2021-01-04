@@ -18,7 +18,7 @@ function Home() {
           
           <Segment size="huge" color="teal" inverted style={{width:"500px", margin:"0 auto"}}>
             <Image src={bpgif} size="huge" style={{margin:"0 auto"}}/>
-            <p>Boto Phooth is a web-based, kinda-fully-featured tool for take, editing, and sharing webcam pictures.</p>
+            <p>Boto Phooth is a web-based, kinda-fully-featured tool for taking, editing, and sharing webcam pictures.</p>
           </Segment>
           
           <Divider />

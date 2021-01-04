@@ -12,7 +12,7 @@ class Navbar extends React.Component {
     render() {
         return(
             <Menu icon='labeled' inverted>
-                <Menu.Item header>
+                <Menu.Item header style={{backgroundColor: 'teal'}} >
                     <Image size="mini" src={Catherine} />
                     BOTO PHOOTH
                 </Menu.Item>
