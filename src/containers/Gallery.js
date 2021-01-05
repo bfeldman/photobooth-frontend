@@ -1,6 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Card, Modal, Image, Comment, Message } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { Card, Modal, Image, Comment, Message, Divider } from 'semantic-ui-react'
+import { format } from 'timeago.js'
+
 
 import PhotoCard from '../components/PhotoCard'
 import UserComment from '../components/UserComment'
@@ -132,6 +135,27 @@ class Gallery extends React.Component {
             <Image size='large' src={`${process.env.REACT_APP_BASE_URL}${this.state.modalPhoto.image_file}`} wrapped />
             
             <Modal.Description className="comment-section">
+            
+            {this.state.modalPhoto.caption ?
+              <Comment.Group>
+                <Comment>
+                  <Comment.Content>
+                      <Comment.Author as={Link} to={`/gallery/${this.props.soughtUser}`}>
+                      {this.props.soughtUser}
+                    </Comment.Author>
+                    
+                    <Comment.Metadata>
+                      {format(this.state.modalPhoto.created_at, { relativeDate: Date.now()})}
+                    </Comment.Metadata>
+                    <Comment.Text>
+                      {this.state.modalPhoto.caption}
+                    </Comment.Text>
+                  </Comment.Content>
+                </Comment>
+              </Comment.Group>
+            : null}
+            
+            <Divider horizontal>Comments</Divider>
             
             <Comment.Group>
               { this.renderComments() }

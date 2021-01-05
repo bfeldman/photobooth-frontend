@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { Button, Grid, Rail, Segment, Icon } from 'semantic-ui-react'
+import { Button, Grid, Rail, Segment, Icon, Input } from 'semantic-ui-react'
 
 import { Stage, Layer, Line, Rect, Text } from "react-konva"
 import { triggerBase64Download } from 'react-base64-downloader'
@@ -33,6 +33,7 @@ class PhotoEditor extends React.Component {
     plantedStickers: [],
     topText: "",
     bottomText: "",
+    caption: "",
     redirect: false
   }
   
@@ -81,11 +82,11 @@ class PhotoEditor extends React.Component {
   /* saves new photo to backend */
   saveToGallery = () => {
     const base64_src = this.stageRef.getStage().toDataURL().split(',')[1]
-    
     const newPhoto = {
       user_id: this.props.userId,
       is_public: true,
-      base64_src: base64_src
+      base64_src: base64_src,
+      caption: this.state.caption
     }
     const token = localStorage.getItem("token")
     fetch(`http://localhost:3000/api/v1/photos/`, {
@@ -124,6 +125,11 @@ class PhotoEditor extends React.Component {
   /* handles changes to both top and bottom text inputs */
   setText = (position, text) => {
     this.setState({[position]: text})
+  }
+  
+  /* handle change to caption input */
+  setCaption = (caption) => {
+    this.setState({caption: caption})
   }
   
   /* changes brush color selected in state */
@@ -213,6 +219,13 @@ class PhotoEditor extends React.Component {
                       label="Undo"
                       icon="undo"
                       style={{marginTop: "5px"}}
+                    />
+                  </Segment>
+                  
+                  <Segment color="black">
+                    <Input
+                      placeholder="caption"
+                      onChange={(e, {value}) => this.setCaption(value)}
                     />
                   </Segment>
                 </Segment.Group>
