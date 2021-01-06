@@ -9,7 +9,7 @@ class WebcamModal extends React.Component {
     webcamPreview: true,
     showCapture: false,
     webcamMirrored: true,
-    countdown: 5,
+    countdown: 3,
     interval: null,
     open: true
   }
@@ -63,14 +63,14 @@ class WebcamModal extends React.Component {
   
   render() {
     return(
-      <div className="webcam-modal">
+      <div className="webcam-modal" style={{height:"90vh"}}>
         <Modal
           closeIcon
           onClose={() => this.setState({open: false})}
           onOpen={() => this.setState({open: true})}
           open={this.state.open}
           basic
-          trigger={<Button>Open Camera</Button> /* button in case user closes modal */}
+          trigger={<Button color="black">Open Camera</Button> /* button in case user closes modal */}
         >
           <Modal.Header>Take A Pic</Modal.Header>
           

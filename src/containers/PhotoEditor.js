@@ -89,7 +89,7 @@ class PhotoEditor extends React.Component {
       caption: this.state.caption
     }
     const token = localStorage.getItem("token")
-    fetch(`http://localhost:3000/api/v1/photos/`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/photos/`, {
       method: "POST",
       headers: {
           "Content-Type": "application/json",

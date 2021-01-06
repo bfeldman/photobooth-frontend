@@ -20,7 +20,7 @@ class App extends React.Component {
   componentDidMount() {
     const token = localStorage.getItem("token")
     if (token) {
-      fetch('http://localhost:3000/api/v1/profile', {
+      fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/profile`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       })

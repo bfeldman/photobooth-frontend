@@ -16,7 +16,7 @@ class Settings extends React.Component {
   /* sends patch request and then updates redux state */
   updateUsername = () => {
     const token = localStorage.getItem("token")
-    fetch(`http://localhost:3000/api/v1/users/${this.props.userId}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/users/${this.props.userId}`, {
       method: "PATCH",
       headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ class Settings extends React.Component {
   
   togglePublic = () => {
     const token = localStorage.getItem("token")
-    fetch(`http://localhost:3000/api/v1/users/${this.props.userId}`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/users/${this.props.userId}`, {
       method: "PATCH",
       headers: {
           "Content-Type": "application/json",
@@ -62,30 +62,32 @@ class Settings extends React.Component {
   /* renders form with current user details from Redux state */
   render() {
     return (
-      <Segment.Group style={{width:"600px", margin:"0 auto"}}>
-        <Segment>
-            <Form onSubmit={this.updateUsername}>
-              <Form.Field>
-                <Input
-                  label="change username"
-                  placeholder={this.props.storeUsername}
-                  value={this.state.username}
-                  onChange={(e, {value}) => {
-                    this.setState({username: value})
-                  }}
+      <div style={{height:"82vh"}}>
+        <Segment.Group style={{width:"600px", margin:"0 auto"}}>
+          <Segment>
+              <Form onSubmit={this.updateUsername}>
+                <Form.Field>
+                  <Input
+                    label="change username"
+                    placeholder={this.props.storeUsername}
+                    value={this.state.username}
+                    onChange={(e, {value}) => {
+                      this.setState({username: value})
+                    }}
+                  />
+                </Form.Field>
+              </Form>
+          </Segment>
+          <Segment>
+                <Checkbox
+                  toggle
+                  label={this.props.storeUserIsPublic ? "Profile visibility: PUBLIC" : "Profile visibility: PRIVATE"}
+                  defaultChecked={this.props.storeUserIsPublic}
+                  onClick={this.togglePublic}
                 />
-              </Form.Field>
-            </Form>
-        </Segment>
-        <Segment>
-              <Checkbox
-                toggle
-                label={this.props.storeUserIsPublic ? "Profile visibility: PUBLIC" : "Profile visibility: PRIVATE"}
-                defaultChecked={this.props.storeUserIsPublic}
-                onClick={this.togglePublic}
-              />
-        </Segment>
-      </Segment.Group>
+          </Segment>
+        </Segment.Group>
+      </div>
       
     )
   }

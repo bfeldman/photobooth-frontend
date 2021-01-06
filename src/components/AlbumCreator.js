@@ -45,7 +45,7 @@ class AlbumCreator extends React.Component {
       photo_ids: pgarray(this.state.selectedPhotos)
     }
     const token = localStorage.getItem("token")
-    fetch(`http://localhost:3000/api/v1/albums/`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/albums/`, {
       method: "POST",
       headers: {
           "Content-Type": "application/json",

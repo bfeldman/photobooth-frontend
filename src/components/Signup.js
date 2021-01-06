@@ -27,7 +27,7 @@ class Signup extends React.Component {
   /* sends state object up to signup handler in App.js for processing */
   submitHandler = (event) => {
     event.preventDefault()
-    fetch('http://localhost:3000/api/v1/users', {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ class Signup extends React.Component {
   
   render() {
     return(
-      <div className="signup-form" style={{width:"600px", margin:"0 auto"}}>
+      <div className="signup-form" style={{width:"300px", margin:"0 auto", height:"80vh"}}>
         <h1>Sign Up</h1>
         
         {this.state.errorMessage ?
@@ -92,7 +92,7 @@ class Signup extends React.Component {
             value={this.state.email_address}
             onChange={this.changeHandler}
           />
-          <Button onClick={this.submitHandler}>Sign Up</Button>
+          <Button onClick={this.submitHandler} color="black">Sign Up</Button>
         </Form>
       </div>
     )

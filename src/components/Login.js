@@ -27,7 +27,7 @@ class Login extends React.Component {
   /* sends credentials, gets JWT and sets Redux store, then redirects */
   submitHandler = (event) => {
     event.preventDefault()
-    fetch('http://localhost:3000/api/v1/login', {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ class Login extends React.Component {
   
   render() {
     return(
-      <div className="login-form" style={{width:"600px", margin:"0 auto"}}>
+      <div className="login-form" style={{width:"300px", margin:"0 auto", height:"80vh"}}>
         <h1>Log In</h1>
         
         {this.state.errorMessage ?
@@ -84,7 +84,7 @@ class Login extends React.Component {
             value={this.state.password} 
             onChange={this.changeHandler}
           />
-          <Button onClick={this.submitHandler}>Log In</Button>
+          <Button onClick={this.submitHandler} color="black">Log In</Button>
         </Form>
       </div>
     )

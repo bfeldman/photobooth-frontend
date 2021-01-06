@@ -28,7 +28,7 @@ class Gallery extends React.Component {
   
   /* fetches photos based on username in path */
   componentDidMount() {
-    fetch(`http://localhost:3000/api/v1/users/${this.props.soughtUser}`)
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/users/${this.props.soughtUser}`)
     .then(response => response.json())
     .then((data) => {
       console.log(data)

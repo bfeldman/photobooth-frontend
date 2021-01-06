@@ -1,6 +1,8 @@
 .App {
   text-align: center;
-  padding: 20px;
+  padding: 25px;
+  background-color: #ebe7e7;
+  height: 100%
 }
 
 .comment {

@@ -23,7 +23,7 @@ class CommentForm extends React.Component {
   
   submitComment = () => {
     const token = localStorage.getItem("token")
-    fetch(`http://localhost:3000/api/v1/comments`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}/api/v1/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
