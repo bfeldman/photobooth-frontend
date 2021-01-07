@@ -63,7 +63,7 @@ class Settings extends React.Component {
   render() {
     return (
       <div style={{height:"82vh"}}>
-        <Segment.Group style={{width:"600px", margin:"0 auto"}}>
+        <Segment.Group style={{width:"400px", margin:"0 auto"}}>
           <Segment>
               <Form onSubmit={this.updateUsername}>
                 <Form.Field>

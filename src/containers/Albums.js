@@ -17,17 +17,17 @@ class Albums extends React.Component {
   
   render() {
     return(
-      <>
-      <h1>Your Albums</h1>
-      <AlbumCreator />
-      <div className="album-cards">
-        {this.props.userAlbums.length > 0 ?
-          <Card.Group itemsPerRow={3}>
-            {this.renderAlbumCards()}
-          </Card.Group>
-        : <p>No albums yet!</p>}
+      <div style={{height:"80vh"}}>
+        <h1>Your Albums</h1>
+        <AlbumCreator />
+        <div className="album-cards">
+          {this.props.userAlbums.length > 0 ?
+            <Card.Group itemsPerRow={3}>
+              {this.renderAlbumCards()}
+            </Card.Group>
+          : <p>No albums yet!</p>}
+        </div>
       </div>
-      </>
     )
   }
 }

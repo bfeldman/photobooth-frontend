@@ -183,7 +183,7 @@ class PhotoEditor extends React.Component {
           <Grid.Column>
             
             {/* TOOLBAR */}
-              <Rail internal position='right'>
+              <Rail internal position='right' style={{paddingTop:"15px"}}>
                 <Segment.Group raised>
                   <Segment color='red'>
                     <TintMenu setTint={this.setTint} />
@@ -302,7 +302,7 @@ class PhotoEditor extends React.Component {
         {/* FILE ACTIONS */}
         <Grid.Row>
           <Grid.Column>
-            <Button onClick={this.download} icon labelPosition="left">
+            <Button onClick={this.download} icon labelPosition="left" color="black">
               <Icon name='download' />
               DOWNLOAD
             </Button>
@@ -316,7 +316,7 @@ class PhotoEditor extends React.Component {
             </Grid.Column>
           : null}
           <Grid.Column>
-            <Button onClick={this.props.retakePhoto} icon labelPosition="left">
+            <Button onClick={this.props.retakePhoto} icon labelPosition="left" color="black">
               <Icon name='camera' />
               RETAKE PICTURE
             </Button>
