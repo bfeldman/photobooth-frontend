@@ -107,7 +107,7 @@ class Gallery extends React.Component {
   
   render() {
     return(
-      <>
+      <div style={{height:"80vh"}}>
       <h1>{`${this.props.soughtUser}'s Pics`}</h1>
       
       {this.state.errorMessage ?
@@ -167,7 +167,7 @@ class Gallery extends React.Component {
         </Modal>
       </div>
       }
-      </>
+      </div>
     )
   }
 }
