@@ -59,7 +59,7 @@ class Signup extends React.Component {
   
   render() {
     return(
-      <div className="signup-form" style={{width:"300px", margin:"0 auto", height:"80vh"}}>
+      <div className="signup-form" style={{width:"300px", margin:"0 auto"}}>
         <h1>Sign Up</h1>
         
         {this.state.errorMessage ?

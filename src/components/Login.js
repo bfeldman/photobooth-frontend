@@ -58,7 +58,7 @@ class Login extends React.Component {
   
   render() {
     return(
-      <div className="login-form" style={{width:"300px", margin:"0 auto", height:"80vh"}}>
+      <div className="login-form" style={{width:"300px", margin:"0 auto"}}>
         <h1>Log In</h1>
         
         {this.state.errorMessage ?

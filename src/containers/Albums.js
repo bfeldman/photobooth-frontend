@@ -17,7 +17,7 @@ class Albums extends React.Component {
   
   render() {
     return(
-      <div style={{height:"80vh"}}>
+      <div>
         <h1>Your Albums</h1>
         <AlbumCreator />
         <div className="album-cards">

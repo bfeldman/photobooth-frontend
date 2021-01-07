@@ -62,7 +62,7 @@ class Settings extends React.Component {
   /* renders form with current user details from Redux state */
   render() {
     return (
-      <div style={{height:"82vh"}}>
+      <div>
         <Segment.Group style={{width:"400px", margin:"0 auto"}}>
           <Segment>
               <Form onSubmit={this.updateUsername}>

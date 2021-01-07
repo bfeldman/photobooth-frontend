@@ -63,7 +63,7 @@ class WebcamModal extends React.Component {
   
   render() {
     return(
-      <div className="webcam-modal" style={{height:"90vh"}}>
+      <div className="webcam-modal">
         <Modal
           closeIcon
           onClose={() => this.setState({open: false})}
